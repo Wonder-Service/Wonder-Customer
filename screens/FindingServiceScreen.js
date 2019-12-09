@@ -219,7 +219,7 @@ class Body extends React.Component {
 
 export default class FindingServiceScreen extends React.Component {
   state = {
-    notification: 1,
+    notification: null,
     worker: {
       name: 'Nguyen Lương',
       skillName: 'Sửa điều hòa', 

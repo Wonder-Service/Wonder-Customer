@@ -31,10 +31,11 @@ export default class Req extends Component {
     description: null,
     address: null,
     addressDetail: null,
+    customerPhone: null,
+    customerName: null,
   };
 
   async componentDidMount () {
-    
     this.focusListener = this.props.navigation.addListener (
       'didFocus',
       async () => {
@@ -62,10 +63,9 @@ export default class Req extends Component {
 
         await GET (USER_ENDPOINT + '?isMyProfile=1', {}, {})
           .then (res => {
-            console.log (res);
-            if (res.status === 200) {
-              console.log (res.data);
-            }
+            this.setState ({
+              customerName: res[0].username,
+            });
           })
           .catch (error => {
             console.log ('ReqeustDetailScreen apiget User ERROR');
@@ -87,8 +87,9 @@ export default class Req extends Component {
       nameDevice,
       description,
       address,
-      addresDetail,
       pickCoords,
+      customerPhone,
+      customerName,
     } = this.state;
     let param = {
       address: address,
@@ -96,7 +97,7 @@ export default class Req extends Component {
       coords: pickCoords,
       skillId: skillId,
       nameDevice: nameDevice,
-      addresDetail: addresDetail,
+      customerPhone: customerPhone,
     };
     return (
       <KeyboardAvoidingView style={styles.createRequestContainer}>
@@ -166,7 +167,10 @@ export default class Req extends Component {
                 <Text emphasis="bold" style={styles.locationText}>
                   Name
                 </Text>
-                <TextInput style={styles.deviceType} placeholder="Kevin" />
+                <TextInput
+                  style={styles.deviceType}
+                  placeholder={customerName}
+                />
                 <Text emphasis="bold" style={styles.locationText}>
                   Phone
                 </Text>
@@ -174,7 +178,7 @@ export default class Req extends Component {
                   <TextInput
                     editable={editable}
                     style={(styles.deviceType, {flex: 8})}
-                    placeholder="0903712312"
+                    placeholder={customerPhone}
                   />
                   <TouchableOpacity
                     onPress={() => {
@@ -190,7 +194,18 @@ export default class Req extends Component {
                       }
                     }}
                   >
-                    <View style={{backgroundColor: 'blue', flex: 2}}>
+                    <View
+                      style={[
+                        styles.button,
+                        {
+                          backgroundColor: '#3ddc84',
+                          width: '70%',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderColor: '#fff',
+                        },
+                      ]}
+                    >
                       <Text style={{color: '#fff', padding: 5}}>
                         {btnEditText}
                       </Text>
@@ -210,33 +225,23 @@ export default class Req extends Component {
                   }}
                 >
                   <View
-                    style={{
-                      backgroundColor: 'blue',
-                      flex: 2,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
+                    style={[
+                      styles.button,
+                      {
+                        backgroundColor: '#3ddc84',
+                        width: '70%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderColor: '#fff',
+                        marginLeft: 50,
+                      },
+                    ]}
                   >
                     <Text style={{color: '#fff', padding: 5}}>
                       Pick Location On Maps
                     </Text>
                   </View>
                 </TouchableOpacity>
-                <Text emphasis="bold" style={styles.locationText}>
-                  More Detail Address
-                </Text>
-                <TextInput
-                  multiline={true}
-                  maxLength={200}
-                  numberOfLines={4}
-                  textAlignVertical="top"
-                  style={styles.detailErr}
-                  placeholder="Address Detail"
-                  value={addresDetail}
-                  onChangeText={text => {
-                    this.setState ({addresDetail: text});
-                  }}
-                />
               </View>
             </View>
 
@@ -363,6 +368,6 @@ const styles = StyleSheet.create ({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: '6%',
-    borderRadius: 25,
+    borderRadius: 17,
   },
 });
