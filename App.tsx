@@ -70,7 +70,7 @@ const Container = createStackNavigator (
   
   },
   {
-    initialRouteName: "FindingServiceScreen",
+    initialRouteName: "Login",
   }
 );
 
