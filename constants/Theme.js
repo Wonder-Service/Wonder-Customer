@@ -1,7 +1,7 @@
 export default {
   COLORS: {
-    DEFAULT: '#DCDCDC',
-    PRIMARY: '#9C26B0',
+    DEFAULT: '#2980B9',
+    PRIMARY: '#2980B9',
     LABEL: '#FE2472',
     INFO: '#00BCD4',
     ERROR: '#F44336',
@@ -14,11 +14,11 @@ export default {
     PLACEHOLDER: '#9FA5AA',
     SWITCH_ON: '#9C26B0',
     SWITCH_OFF: '#D4D9DD',
-    GRADIENT_START: '#6B24AA',
-    GRADIENT_END: '#AC2688',
+    GRADIENT_START: '#2980B9',
+    GRADIENT_END: '#6DD5FA',
     PRICE_COLOR: '#EAD5FB',
-    BORDER_COLOR: '#E7E7E7',
-    BLOCK: '#E7E7E7',
+    BORDER_COLOR: '#2980B9',
+    BLOCK: '#2980B9',
     ICON: '#4A4A4A',
   },
   SIZES: {
