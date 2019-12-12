@@ -1,21 +1,25 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { createStackNavigator} from 'react-navigation-stack';
+import { createStackNavigator } from 'react-navigation-stack';
 import Login from "./screens/LoginScreen";
 import HomeRequestService from "./screens/HomeRequestService";
 import HomeScreen from "./screens/HomeScreen";
 import FindingServiceScreen from './screens/FindingServiceScreen'
-import { createAppContainer} from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 import NavigationService from "./service/navigation";
 import RequestDetailScreen from "./screens/RequestDetailScreen";
 import NotificationServiceScreen from "./screens/NotificationServiceScreen"
 import MapPickerScreen from "./screens/MapPickerScreen"
-import Font from 'expo';
+import FeedBackScreen from "./screens/FeedBackScreen"
+import { AppLoading } from 'expo';
+
+import * as Font from 'expo-font';
 import { Asset } from 'expo-asset'
+import { async } from 'q';
 
 
 
-const Container = createStackNavigator (
+const Container = createStackNavigator(
   {
     Login: {
       screen: Login,
@@ -67,7 +71,14 @@ const Container = createStackNavigator (
         gesturesEnabled: false,
       },
     },
-  
+    FeedBackScreen: {
+      screen: FeedBackScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+
   },
   {
     initialRouteName: "Login",
@@ -77,17 +88,42 @@ const Container = createStackNavigator (
 const AppContainer = createAppContainer(Container);
 
 export default class App extends React.Component {
+  state = {
+    isReady: false,
+  }
+
+  loadAsset = async () => {
+    await Font.loadAsync({
+      'lato-bold': require('./assets/fonts/lato-bold.ttf'),
+      'lato-light': require('./assets/fonts/lato-light.ttf'),
+      'lato-medium': require('./assets/fonts/lato-medium.ttf'),
+      'lato-regular': require('./assets/fonts/lato-regular.ttf'),
+    }
+    )
+  }
 
   render() {
-    return (
-      <AppContainer
-      ref={navigatorRef => {
+    if (!this.state.isReady) {
+      return (
+        <AppLoading
+          startAsync={this.loadAsset}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      )
+
+    } else {
+      return (
+        <AppContainer
+          ref={navigatorRef => {
             NavigationService.setTopLevelNavigator(navigatorRef);
-         }}
-      />
-    );
+          }}
+        />
+      );
+    }
+    
   }
-  
+
 }
 
 const styles = StyleSheet.create({

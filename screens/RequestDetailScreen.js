@@ -39,16 +39,10 @@ export default class Req extends Component {
     this.focusListener = this.props.navigation.addListener (
       'didFocus',
       async () => {
-        await console.log (
-          'ReqeustDetailScreen Did Mount skill Id: ' + this.state.skillId
-        );
         try {
           await this.setState ({
             skillId: this.props.navigation.getParam ('skillId', 2),
           });
-          await console.log (
-            'ReqeustDetailScreen Did Mount skill Id: ' + this.state.skillId
-          );
 
           await this.setState ({
             pickCoords: {
@@ -56,7 +50,6 @@ export default class Req extends Component {
               longitude: this.props.navigation.getParam ('picklongitude'),
             },
           });
-          console.log (this.state.pickCoords);
         } catch (e) {
           console.log ('ReqeustDetailScreen getParam navigation:' + e);
         }
@@ -249,15 +242,11 @@ export default class Req extends Component {
               <View style={{width: '100%', alignItems: 'center'}}>
                 <TouchableOpacity
                   onPress={async () => {
-                    await console.log (param);
                     await POST (ACCEPT_ORDER_ENDPOINT, {}, {}, param)
                       .then (res => {
                         NavigationService.navigate ('FindingServiceScreen');
-                        console.log (res);
-                        console.log (param);
                       })
                       .catch (error => {
-                        console.log (error);
                       });
                   }}
                   style={[

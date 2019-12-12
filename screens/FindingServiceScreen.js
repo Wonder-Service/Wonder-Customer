@@ -1,18 +1,22 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions, Image} from 'react-native';
+import {View, StyleSheet, Text, Dimensions, Image, AsyncStorage} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import NavigationService from '../service/navigation';
 import {Notifications} from 'expo';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { POST, GET } from '../api/caller';
-import { USER_ENDPOINT } from '../api/endpoint';
+import {POST, GET} from '../api/caller';
+import {
+  USER_ENDPOINT,
+  NOTIFICATION_TYPE_ACCEPT,
+  NOTIFICATION_TYPE_REQEST,
+  NOTIFICATION_TYPE_COMPELETE,
+} from '../api/endpoint';
 // import IconE from 'react-native-vector-icons/Entypo';
 
 const height = Dimensions.get ('screen').height;
 const width = Dimensions.get ('screen').width;
 
 class Body extends React.Component {
-
   render () {
     if (this.props.notification) {
       return (
@@ -59,7 +63,7 @@ class Body extends React.Component {
                 style={{fontSize: 25, color: '#3ddc84'}}
               />
             </View>
-              <Text>{this.props.workerData.skillName}</Text>
+            <Text>{this.props.workerData.skillName}</Text>
             <View style={{flexDirection: 'row'}}>
               <Icon name="star" style={styles.starIcon} />
               <Icon name="star" style={styles.starIcon} />
@@ -72,17 +76,19 @@ class Body extends React.Component {
             </Text>
             <View>
               <Text>
-                Worker's diagnose about your problem 
+                Worker's diagnose about your problem{' '}
               </Text>
-              <Text style={{
-                textAlign:'left',
-                fontSize: 18,
-                padding:10,
-                borderWidth: 1,
-                borderRadius: 10,
-                paddingHorizontal: 40,
-              }}>
-                Need to change the adapter
+              <Text
+                style={{
+                  textAlign: 'left',
+                  fontSize: 18,
+                  padding: 10,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  paddingHorizontal: 40,
+                }}
+              >
+                {this.props.diagnoseMess}
               </Text>
             </View>
             <Text>Worker ask you this price for the serivce</Text>
@@ -90,7 +96,7 @@ class Body extends React.Component {
               style={{
                 borderRadius: 15,
                 marginTop: 10,
-                backgroundColor:'red',
+                backgroundColor: 'red',
                 marginTop: 30,
               }}
             >
@@ -107,9 +113,9 @@ class Body extends React.Component {
             </View>
             <View
               style={{
-                justifyContent: 'space-between', 
+                justifyContent: 'space-between',
                 flexDirection: 'row',
-                paddingBottom:20,
+                paddingBottom: 20,
               }}
             >
               <TouchableOpacity
@@ -222,13 +228,13 @@ export default class FindingServiceScreen extends React.Component {
     notification: null,
     worker: {
       name: 'Nguyen Lương',
-      skillName: 'Sửa điều hòa', 
-      rate: 5, 
+      skillName: 'Sửa điều hòa',
+      rate: 5,
       phoneNumber: '03030213123',
     },
     priceSerivce: 200000,
     workerUsername: null,
-
+    diagnoseMess: 'Need to change battery ',
   };
   handleCancel = () => {
     // stop handle notification
@@ -236,29 +242,49 @@ export default class FindingServiceScreen extends React.Component {
     NavigationService.navigate ('RequestDetailScreen');
   };
 
-  handleNotification = async (notification) => {
-    await this.setState({notification: notification})
-    this.setState({
-      worker: {
-        name: this.notificat
-      }
-    });
-    await GET(USER_ENDPOINT,{},{},)
-    .then( res => {
-        
-    }).catch(error => {
-      console.log('FindingServiceScreen GET USER ERROR')
-    })
-  }
+  handleNotification = async noti => {
+    this.setState ({notification: noti});
+    await AsyncStorage.setItem('workerId',noti.data.workerId)
+    switch (notification.data.notificationType === NOTIFICATION_TYPE_REQEST) {
+      case NOTIFICATION_TYPE_REQEST:
+        this.setState ({priceSerivce: this.state.notification.data.price});
+        this.setState ({
+          diagnoseMess: this.state.notification.data.diagnoseMess,
+        });
+        await GET (
+          USER_ENDPOINT + '/' + noti.data.workerId,
+          {},
+          {}
+        ).then (res => {
+          WORKER = res
+          this.setState ({
+            worker: {
+              name: res.username,
+              skillName: res.skills[0].name,
+              rate: 5,
+              phoneNumber: null,
+            },
+          });
+        });
+        break;
+      case NOTIFICATION_TYPE_COMPELETE:
+
+        break;
+    }
+    if (notification.data.notificationType === NOTIFICATION_TYPE_REQEST) {
+    } else if (
+      notification.data.notificationType === NOTIFICATION_TYPE_COMPELETE
+    ) {
+    }
+  };
   async componentDidMount () {
     this._notificationSubscription = Notifications.addListener (noti => {
-      this.setState ({notification: noti});
+      this.handleNotification (noti);
     });
-     
   }
 
   render () {
-    const {notification, worker, priceSerivce} = this.state;
+    const {notification, worker, priceSerivce, diagnoseMess} = this.state;
     const renderBody = this.renderBody;
     return (
       <View style={styles.container}>
@@ -269,11 +295,12 @@ export default class FindingServiceScreen extends React.Component {
               : 'Found a worker for you'}
           </Text>
         </View>
-        <Body 
+        <Body
           notification={notification}
           workerData={worker}
           priceSerivce={priceSerivce}
-         />
+          diagnoseMess={diagnoseMess}
+        />
 
       </View>
     );
@@ -333,3 +360,5 @@ const styles = StyleSheet.create ({
     color: '#ff9501',
   },
 });
+
+export let WORKER={};

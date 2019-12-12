@@ -4,5 +4,6 @@ export const APP_CONST = {
    WASHING_MACHINE_ICON: require('./assets/images/washing-machine.png'),
    CUTLERY_ICON: require('./assets/images/cutlery.png'),
    AIR_CONDITIONER_ICON: require('./assets/images/air-conditioner.png'),
-   FAUCET_ICON: require('./assets/images/faucet.png')
+   FAUCET_ICON: require('./assets/images/faucet.png'),
+   BG_LOGIN: require('./assets/images/bg.jpg'),
 }
