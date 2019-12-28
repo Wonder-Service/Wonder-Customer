@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  AsyncStorage,
 } from 'react-native';
 
 import {TextInput} from 'react-native-gesture-handler';
@@ -243,7 +244,8 @@ export default class Req extends Component {
                 <TouchableOpacity
                   onPress={async () => {
                     await POST (ACCEPT_ORDER_ENDPOINT, {}, {}, param)
-                      .then (res => {
+                      .then ( async (res) => {
+                        await AsyncStorage.setItem('orderId', res.orderId+ '')
                         NavigationService.navigate ('FindingServiceScreen');
                       })
                       .catch (error => {

@@ -11,7 +11,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import Button from '../components/Button';
 import {LOGIN_ENDPOINT, DEVICEID_ENDPOINT} from '../api/endpoint';
 import NavigationService from '../service/navigation';
-import {POSTLOGIN, PUT, POST} from '../api/caller';
+import {POSTLOGIN, PUT, POST, POST_NOBODY} from '../api/caller';
 import registerForPushNotificationsAsync from '../service/notification';
 import {APP_CONST} from '../app.const';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -49,27 +49,17 @@ export default class LoginScreen extends Component {
             const jwt = res.headers.get ('Authorization');
             await AsyncStorage.setItem ('jwt', jwt);
             const deviceId = await AsyncStorage.getItem ('device_id');
-            await POST (
+            await POST_NOBODY (
               DEVICEID_ENDPOINT,
-              {},
-              {
-                Authorization: jwt,
-              },
+              {},{},
               {
                 deviceId: deviceId,
               }
-            )
-              .then (response => {
-                if (response.id != null) {
-                  NavigationService.navigate ('HomeScreen');
-                } else {
-                  this.dropDownAlertRef.alertWithType (
-                    'warn',
-                    'Login',
-                    'Login ERROR ' + response.status
-                  );
+            ).then(res => 
+                {
+                  NavigationService.navigate('HomeScreen')
                 }
-              })
+              )
               .catch (error => {
                 console.log (error);
               });
@@ -81,6 +71,7 @@ export default class LoginScreen extends Component {
         })
         .catch (error => {
           this.dropDownAlertRef.alertWithType ('error', 'Error', error);
+          console.log (error);
         });
     }
   };

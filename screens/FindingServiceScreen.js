@@ -1,22 +1,45 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions, Image, AsyncStorage} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Image,
+  AsyncStorage,
+} from 'react-native';
+import {TouchableOpacity, FlatList} from 'react-native-gesture-handler';
 import NavigationService from '../service/navigation';
 import {Notifications} from 'expo';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {POST, GET} from '../api/caller';
+import {POST, GET, POSTLOGIN, POST_NOTIFICATION, PUT} from '../api/caller';
 import {
   USER_ENDPOINT,
   NOTIFICATION_TYPE_ACCEPT,
   NOTIFICATION_TYPE_REQEST,
   NOTIFICATION_TYPE_COMPELETE,
+  ACCEPT_ORDER_ENDPOINT,
 } from '../api/endpoint';
-// import IconE from 'react-native-vector-icons/Entypo';
 
 const height = Dimensions.get ('screen').height;
 const width = Dimensions.get ('screen').width;
 
 class Body extends React.Component {
+  handleAccept = async () => {
+    let orderId = await AsyncStorage.getItem ('orderId');
+    await PUT (
+      ACCEPT_ORDER_ENDPOINT + '/' + orderId,
+      {},
+      {},
+      {
+        workerId: this.props.workerData.id,
+      }
+    ).then (res => {
+      // if (res.status === 200) {
+        NavigationService.navigate ('MapDirection');
+      // }
+    });
+  };
+
   render () {
     if (this.props.notification) {
       return (
@@ -41,7 +64,7 @@ class Body extends React.Component {
                 }}
               />
             </View>
-            <Text>Đã tìm thấy thợ!</Text>
+            <Text>Found A Worker</Text>
 
             <View
               style={{
@@ -63,7 +86,16 @@ class Body extends React.Component {
                 style={{fontSize: 25, color: '#3ddc84'}}
               />
             </View>
-            <Text>{this.props.workerData.skillName}</Text>
+            <FlatList 
+              data = {this.props.workerData.skills}
+              keyExtractor={item => (
+                item.id.toString()
+              )}
+              renderItem= {({item}) => (
+                <Text>{item.name}</Text>
+              )
+            }
+            />
             <View style={{flexDirection: 'row'}}>
               <Icon name="star" style={styles.starIcon} />
               <Icon name="star" style={styles.starIcon} />
@@ -118,9 +150,7 @@ class Body extends React.Component {
                 paddingBottom: 20,
               }}
             >
-              <TouchableOpacity
-                onPress={() => NavigationService.navigate ('Rating')}
-              >
+              <TouchableOpacity onPress={this.handleAccept}>
                 <View
                   style={{
                     marginTop: 25,
@@ -144,7 +174,9 @@ class Body extends React.Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => NavigationService.navigate ('Rating')}
+                onPress={
+                  () => NavigationService.navigate ('RequestDetailScreen')
+              }
               >
                 <View
                   style={{
@@ -190,7 +222,7 @@ class Body extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={() => {
-                NavigationService.navigate ('RequestDetailService');
+                NavigationService.goBack ();
               }}
               style={[
                 styles.button,
@@ -228,9 +260,10 @@ export default class FindingServiceScreen extends React.Component {
     notification: null,
     worker: {
       name: 'Nguyen Lương',
-      skillName: 'Sửa điều hòa',
+      skills: [],
       rate: 5,
       phoneNumber: '03030213123',
+      deviceId: null,
     },
     priceSerivce: 200000,
     workerUsername: null,
@@ -244,11 +277,14 @@ export default class FindingServiceScreen extends React.Component {
 
   handleNotification = async noti => {
     this.setState ({notification: noti});
-    await AsyncStorage.setItem('workerId',noti.data.workerId)
-    switch (notification.data.notificationType === NOTIFICATION_TYPE_REQEST) {
+    await AsyncStorage.setItem ('workerId', noti.data.workerId + '');
+    switch (this.state.notification.data.notificationType) {
       case NOTIFICATION_TYPE_REQEST:
-        this.setState ({priceSerivce: this.state.notification.data.price});
-        this.setState ({
+        await this.setState ({
+          priceSerivce: this.state.notification.data.price,
+        });
+
+        await this.setState ({
           diagnoseMess: this.state.notification.data.diagnoseMess,
         });
         await GET (
@@ -256,25 +292,25 @@ export default class FindingServiceScreen extends React.Component {
           {},
           {}
         ).then (res => {
-          WORKER = res
+          console.log (res);
+          WORKER = res;
           this.setState ({
             worker: {
+              id: res.id,
               name: res.username,
-              skillName: res.skills[0].name,
+              skills: res.skills,
               rate: 5,
               phoneNumber: null,
+              deviceId: res.deviceId,
             },
           });
+           AsyncStorage.setItem('worker_device_id', this.state.worker.deviceId)
         });
-        break;
-      case NOTIFICATION_TYPE_COMPELETE:
 
         break;
-    }
-    if (notification.data.notificationType === NOTIFICATION_TYPE_REQEST) {
-    } else if (
-      notification.data.notificationType === NOTIFICATION_TYPE_COMPELETE
-    ) {
+      case NOTIFICATION_TYPE_COMPELETE:
+        NavigationService.navigate ('FeedBackScreen');
+        break;
     }
   };
   async componentDidMount () {
@@ -361,4 +397,4 @@ const styles = StyleSheet.create ({
   },
 });
 
-export let WORKER={};
+export let WORKER = {};

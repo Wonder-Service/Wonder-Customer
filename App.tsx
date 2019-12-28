@@ -12,10 +12,9 @@ import NotificationServiceScreen from "./screens/NotificationServiceScreen"
 import MapPickerScreen from "./screens/MapPickerScreen"
 import FeedBackScreen from "./screens/FeedBackScreen"
 import { AppLoading } from 'expo';
+import MapDirection from "./screens/MapDirection"
 
 import * as Font from 'expo-font';
-import { Asset } from 'expo-asset'
-import { async } from 'q';
 
 
 
@@ -78,6 +77,13 @@ const Container = createStackNavigator(
         gesturesEnabled: false,
       },
     },
+    MapDirection: {
+      screen: MapDirection,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
 
   },
   {
@@ -126,11 +132,3 @@ export default class App extends React.Component {
 
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

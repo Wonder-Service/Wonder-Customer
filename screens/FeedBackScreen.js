@@ -12,8 +12,9 @@ import {WORKER} from './FindingServiceScreen';
 import {Rating} from 'react-native-ratings';
 import {TextInput, ScrollView} from 'react-native-gesture-handler';
 import NavigationService from '../service/navigation';
-import { POST } from '../api/caller';
-import Text from '../components/FontText'
+import {POST, PUT} from '../api/caller';
+import Text from '../components/FontText';
+import { ACCEPT_ORDER_ENDPOINT } from '../api/endpoint';
 
 const height = Dimensions.get ('screen').height;
 const width = Dimensions.get ('screen').width;
@@ -29,191 +30,200 @@ export default class FeedBackScreen extends React.Component {
   };
 
   render () {
-    let workerId = AsyncStorage.getItem('workerId')
-    const {txtFeedBack } = this.state;
+    let workerId = AsyncStorage.getItem ('workerId');
+    const {txtFeedBack} = this.state;
     return (
-      <KeyboardAvoidingView style={styles.container} behavior='padding'>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={styles.container}>
-        <View style={styles.feedBackFormContainer}>
-          <Text style={{fontSize: 25, padding: 20, paddingTop: 20, fontFamily:'lato-bold'}}>
-            Feed Back Our Service
-          </Text>
-          <View style={styles.infoWorker}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                style={{width: 122, height: 122, marginTop: 15}}
-                source={{
-                  uri: 'https://www.pngrepo.com/png/17468/170/avatar.png',
-                }}
-              />
-              <View style={{flexDirection: 'column'}}>
-                <Text>Worker:</Text>
-                <Text
-                  emphasis="bold"
-                  style={{
-                    fontSize: 25,
-                    justifyContent: 'center',
-                    paddingTop: 10,
-                    paddingBottom: 10,
+          <View style={styles.feedBackFormContainer}>
+            <Text
+              style={{
+                fontSize: 25,
+                padding: 20,
+                paddingTop: 20,
+                fontFamily: 'lato-bold',
+              }}
+            >
+              Feed Back Our Service
+            </Text>
+            <View style={styles.infoWorker}>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  style={{width: 122, height: 122, marginTop: 15}}
+                  source={{
+                    uri: 'https://www.pngrepo.com/png/17468/170/avatar.png',
                   }}
-                >
-                  Nguyen Van Thanh
-                </Text>
-                <Text>
-                  Phone:
-                </Text>
-                <Text
-                  emphasis="bold"
-                  style={{
-                    fontSize: 25,
-                    justifyContent: 'center',
-                  }}
-                >
-                  0979334561
-                </Text>
+                />
+                <View style={{flexDirection: 'column'}}>
+                  <Text>Worker:</Text>
+                  <Text
+                    emphasis="bold"
+                    style={{
+                      fontSize: 25,
+                      justifyContent: 'center',
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                    }}
+                  >
+                    Nguyen Van Thanh
+                  </Text>
+                  <Text>
+                    Phone:
+                  </Text>
+                  <Text
+                    emphasis="bold"
+                    style={{
+                      fontSize: 25,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    0979334561
+                  </Text>
+                </View>
               </View>
+
             </View>
-
-          </View>
-
-          <View
-            style={{
-              borderRadius: 2,
-              borderColor: 'white',
-              borderWidth: 0,
-            }}
-          >
-            <Text
-              style={[
-                styles.titleText,
-                {
-                  marginTop: 20,
-                  color: '#ff9051',
-                  fontSize: 32,
-                  fontWeight: 'bold',
-                },
-              ]}
-            >
-              Rate me, Thank you!
-            </Text>
-          </View>
-
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 2,
-              borderColor: 'black',
-              borderWidth: 0,
-            }}
-          >
-            <Text
-              style={[
-                styles.titleText,
-                {marginTop: 30, color: '#ff9051', fontSize: 22},
-              ]}
-            >
-              Please Swipe to Rate
-            </Text>
-            <Rating
-              showRating
-              imageSize={40}
-              ratingTextColor="#ff9051"
-              ratingColor="#ff9051"
-              onFinishRating={this.ratingCompleted}
-              style={{paddingVertical: 10}}
-              startingValue={5}
-            />
 
             <View
               style={{
-                marginTop: 20,
-                justifyContent: 'center',
-                alignItems: 'center',
-                // borderWidth: 1,
-                // borderColor: 'pink'
+                borderRadius: 2,
+                borderColor: 'white',
+                borderWidth: 0,
               }}
             >
               <Text
-                style={{
-                  paddingLeft: 25,
-                  paddingRight: 25,
-                  fontSize: 18,
-                  color: 'black',
-                }}
-              >
-                I hope to received your comments to improve our services,
-                <Text
-                  style={{
-                    color: '#f1c40f',
+                style={[
+                  styles.titleText,
+                  {
+                    marginTop: 20,
+                    color: '#ff9051',
+                    fontSize: 32,
                     fontWeight: 'bold',
-                    fontSize: 25,
-                  }}
-                >
-                  Thank you!
-                </Text>
+                  },
+                ]}
+              >
+                Rate me, Thank you!
               </Text>
             </View>
 
             <View
               style={{
-                flexDirection: 'column',
-                padding: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 2,
+                borderColor: 'black',
+                borderWidth: 0,
               }}
             >
+              <Text
+                style={[
+                  styles.titleText,
+                  {marginTop: 30, color: '#ff9051', fontSize: 22},
+                ]}
+              >
+                Please Swipe to Rate
+              </Text>
+              <Rating
+                showRating
+                imageSize={40}
+                ratingTextColor="#ff9051"
+                ratingColor="#ff9051"
+                onFinishRating={this.ratingCompleted}
+                style={{paddingVertical: 10}}
+                startingValue={5}
+              />
+
               <View
                 style={{
-                  borderColor: '#ff9051',
-                  borderRadius: 15,
-                  borderWidth: 1,
+                  marginTop: 20,
                   justifyContent: 'center',
                   alignItems: 'center',
+                  // borderWidth: 1,
+                  // borderColor: 'pink'
                 }}
               >
-
-                <TextInput
+                <Text
                   style={{
+                    paddingLeft: 25,
+                    paddingRight: 25,
                     fontSize: 18,
-                    // borderColor: 'gray',
-                    // borderWidth: 1,
-                    height: 70,
-                    width: width * 8 / 10,
+                    color: 'black',
                   }}
-                  onChangeText={text => {
-                    this.setState ({txtFeedBack: text});
-                  }}
-                  value={txtFeedBack}
-                />
-
+                >
+                  I hope to received your comments to improve our services,
+                  <Text
+                    style={{
+                      color: '#f1c40f',
+                      fontWeight: 'bold',
+                      fontSize: 25,
+                    }}
+                  >
+                    Thank you!
+                  </Text>
+                </Text>
               </View>
+
               <View
                 style={{
-                  // borderWidth: 1,
+                  flexDirection: 'column',
+                  padding: 20,
                 }}
               >
-                <Button
-                  style={{height: '100%', borderRadius: 2}}
-                  title="FEED BACK"
-                  color="#ff9051"
-                  onPress={ async() => {
-                    await POST('/api/orders/'+ workerId +'/feedback'
-                    ,{},{}).then(
-                      res => {
-                        console.log(res)
-                      }
-                    ).then(()=> {
-                      NavigationService.navigate('HomeScreen')
-                    }).catch(error => {
-                      NavigationService.navigate('HomeScreen')
-
-                    })
+                <View
+                  style={{
+                    borderColor: '#ff9051',
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
-                />
+                >
+
+                  <TextInput
+                    style={{
+                      fontSize: 18,
+                      // borderColor: 'gray',
+                      // borderWidth: 1,
+                      height: 70,
+                      width: width * 8 / 10,
+                    }}
+                    onChangeText={text => {
+                      this.setState ({txtFeedBack: text});
+                    }}
+                    value={txtFeedBack}
+                  />
+
+                </View>
+                <View
+                  style={{
+                    // borderWidth: 1,
+                  }}
+                >
+                  <Button
+                    style={{height: '100%', borderRadius: 2}}
+                    title="FEED BACK"
+                    color="#ff9051"
+                    onPress={async () => {
+                      const token = await AsyncStorage.getItem('device_id')
+                      await PUT (
+                        ACCEPT_ORDER_ENDPOINT +'/'+ 11 + '/feedback',
+                        {},
+                        {}
+                      )
+                        .then (res => {
+                          console.log (res);
+                        })
+                        .catch (error => {
+                          console.log (error);
+                          NavigationService.navigate ('HomeScreen');
+                        });
+                    }}
+                  />
+                </View>
               </View>
             </View>
+
           </View>
-          
-        </View>
         </View>
       </KeyboardAvoidingView>
     );
