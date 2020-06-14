@@ -87,7 +87,7 @@ const Container = createStackNavigator(
 
   },
   {
-    initialRouteName: "Login",
+    initialRouteName: "Login"
   }
 );
 
