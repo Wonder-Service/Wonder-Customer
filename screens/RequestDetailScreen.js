@@ -12,11 +12,8 @@ import {
 
 import {TextInput} from 'react-native-gesture-handler';
 import NavigationService from '../service/navigation';
-import {NavigationEvents} from 'react-navigation';
-import DropdownAlert from 'react-native-dropdownalert';
 import {POST, GET} from '../api/caller';
 import {ACCEPT_ORDER_ENDPOINT, USER_ENDPOINT} from '../api/endpoint';
-import {Notifications} from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class Req extends Component {

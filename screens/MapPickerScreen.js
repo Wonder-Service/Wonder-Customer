@@ -41,7 +41,7 @@ export default class MapPickerScreen extends React.Component {
     let url = new URL ('/json', endpoint);
     const params = {
       address: address,
-      key: '',
+      key: 'AIzaSyBF3Kg42z_Q3fVAwJdnuOgxLCcZAj3K56E',
     };
     Object.keys (params).forEach (key =>
       url.searchParams.append (key, params[key])
