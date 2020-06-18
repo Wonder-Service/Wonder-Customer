@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Login from "./screens/LoginScreen";
 import HomeRequestService from "./screens/HomeRequestService";
 import HomeScreen from "./screens/HomeScreen";
-import HomeScreenV2 from "./screens/HomeScreen";
+import HomeScreenV2 from "./screens/HomeScreenV2";
 import FindingServiceScreen from './screens/FindingServiceScreen'
 import { createAppContainer } from 'react-navigation';
 import NavigationService from "./service/navigation";

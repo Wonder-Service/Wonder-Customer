@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import NavigationService from '../Component/Navigation';
+import NavigationService from '../service/navigation';
 import { Icon } from 'react-native-elements';
 
 
@@ -48,7 +48,7 @@ export default class HomeScreenV2 extends React.Component {
               <View style={styles.item}>
                 <Image
                   style={styles.image}
-                  source={require('.../assets/images/television.png')}
+                  source={require('../assets/images/television.png')}
                 />
                 <Text style={styles.text}>Thiết bị giải trí</Text>
               </View>
@@ -63,7 +63,7 @@ export default class HomeScreenV2 extends React.Component {
               <View style={styles.item}>
                 <Image
                   style={styles.image}
-                  source={require('.../assets/images/lamp.png')}
+                  source={require('../assets/images/lamp.png')}
                 />
                 <Text style={styles.text}>Thiết bị chiếu sáng</Text>
               </View>
@@ -78,7 +78,7 @@ export default class HomeScreenV2 extends React.Component {
               <View style={styles.item}>
                 <Image
                   style={styles.image}
-                  source={require('.../assets/images/washing-machine.png')}
+                  source={require('../assets/images/washing-machine.png')}
                 />
                 <Text style={styles.text}>Thiết bị giặt ủi</Text>
               </View>
@@ -93,7 +93,7 @@ export default class HomeScreenV2 extends React.Component {
               <View style={styles.item}>
                 <Image
                   style={styles.image}
-                  source={require('.../assets/images/cutlery.png')}
+                  source={require('../assets/images/cutlery.png')}
                 />
                 <Text style={styles.text}>Thiết bị nhà bếp</Text>
               </View>
@@ -108,7 +108,7 @@ export default class HomeScreenV2 extends React.Component {
               <View style={styles.item}>
                 <Image
                   style={styles.image}
-                  source={require('.../assets/images/air-conditioner.png')}
+                  source={require('../assets/images/air-conditioner.png')}
                 />
                 <Text style={styles.text}>Điều hoà</Text>
               </View>
