@@ -12,8 +12,8 @@ import NotificationServiceScreen from "./screens/NotificationServiceScreen"
 import MapPickerScreen from "./screens/MapPickerScreen"
 import FeedBackScreen from "./screens/FeedBackScreen"
 import { AppLoading } from 'expo';
-import MapDirection from "./screens/MapDirection"
-
+import MapDirection from "./screens/MapDirection";
+import ProfileScreen from "./screens/ProfileScreen";
 import * as Font from 'expo-font';
 
 
@@ -79,6 +79,14 @@ const Container = createStackNavigator(
     },
     MapDirection: {
       screen: MapDirection,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+
+    ProfileScreen: {
+      screen: ProfileScreen,
       navigationOptions: {
         header: null,
         gesturesEnabled: false,
