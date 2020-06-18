@@ -43,10 +43,10 @@ export default class HomeRequestService extends React.Component {
 				<View style={styles.header}>
 					<View>
 						<Text style={{ paddingLeft: 0, fontSize: 17 }}>
-							
+							Xin chào Thắng,
                   </Text>
 						<Text style={{ fontSize: 23 }}>
-						Let's choose what you want to fix
+							Chọn loại thiết bị cần sửa chữa
                   </Text>
 					</View>
 				</View>
@@ -62,7 +62,7 @@ export default class HomeRequestService extends React.Component {
 										style={styles.image}
 										source={APP_CONST.TV_ICON}
 									/>
-									<Text>Monitor</Text>
+									<Text>Thiết bị giải trí</Text>
 								</View>
 							</TouchableHighlight>
 						</View>
@@ -77,7 +77,7 @@ export default class HomeRequestService extends React.Component {
 										style={styles.image}
 										source={APP_CONST.LAMP_ICON}
 									/>
-									<Text>Light</Text>
+									<Text>Thiết bị chiếu sáng</Text>
 								</View>
 							</TouchableHighlight>
 						</View>
@@ -90,7 +90,7 @@ export default class HomeRequestService extends React.Component {
 										style={styles.image}
 										source={APP_CONST.WASHING_MACHINE_ICON}
 									/>
-									<Text>Washing Machine</Text>
+									<Text>Thiết bị giặt ủi</Text>
 								</View>
 							</TouchableHighlight>
 						</View>
@@ -104,7 +104,7 @@ export default class HomeRequestService extends React.Component {
 										style={styles.image}
 										source={APP_CONST.CUTLERY_ICON}
 									/>
-									<Text>Kitchen Device</Text>
+									<Text>Thiết bị nhà bếp</Text>
 								</View>
 							</TouchableHighlight>
 						</View>
@@ -119,7 +119,7 @@ export default class HomeRequestService extends React.Component {
 										style={styles.image}
 										source={APP_CONST.AIR_CONDITIONER_ICON}
 									/>
-									<Text>Air Conditioner</Text>
+									<Text>Điều hoà phòng</Text>
 								</View>
 							</TouchableHighlight>
 						</View>
@@ -134,7 +134,7 @@ export default class HomeRequestService extends React.Component {
 										style={styles.image}
 										source={APP_CONST.FAUCET_ICON}
 									/>
-									<Text>Water System</Text>
+									<Text>Hệ thống nước</Text>
 								</View>
 							</TouchableHighlight>
 						</View>

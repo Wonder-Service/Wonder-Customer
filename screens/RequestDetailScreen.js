@@ -12,9 +12,11 @@ import {
 
 import {TextInput} from 'react-native-gesture-handler';
 import NavigationService from '../service/navigation';
+import {NavigationEvents} from 'react-navigation';
+import DropdownAlert from 'react-native-dropdownalert';
 import {POST, GET} from '../api/caller';
 import {ACCEPT_ORDER_ENDPOINT, USER_ENDPOINT} from '../api/endpoint';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {Notifications} from 'expo';
 
 export default class Req extends Component {
   constructor (props) {
@@ -104,7 +106,7 @@ export default class Req extends Component {
               onPress={() => NavigationService.navigate ('Tabs')}
             />
             <View style={{alignItems: 'center'}}>
-              <Text emphasis="medium" style={{fontSize: 25 , paddingTop: 20 , fontWeight: "800"}}>
+              <Text emphasis="medium" style={{fontSize: 17}}>
                 Fixxy Service Detail
               </Text>
             </View>
@@ -120,20 +122,17 @@ export default class Req extends Component {
                 </Text>
               </View>
               <View style={styles.inputContainer}>
-                <View style={styles.deviceTypeContainer}>
                 <Text emphasis="bold" style={styles.locationText}>
                   Device's Name
                 </Text>
                 <TextInput
                   style={styles.deviceType}
-                  placeholder="Ex: Moniter LG MK6300"
+                  placeholder="Name Model Device (Ex: Moniter LG MK6300)"
                   value={nameDevice}
                   onChangeText={text => {
                     this.setState ({nameDevice: text});
                   }}
                 />
-                </View>
-                <View style={styles.deviceTypeContainer}>
                 <Text emphasis="bold" style={styles.locationText}>
                   Description
                 </Text>
@@ -149,7 +148,6 @@ export default class Req extends Component {
                     this.setState ({description: text});
                   }}
                 />
-                </View>
               </View>
             </View>
 
@@ -159,73 +157,24 @@ export default class Req extends Component {
                   Your Contact Information
                 </Text>
               </View>
-              <View style={styles.inputContainer2}>
-                <View style={styles.deviceTypeContainer}>
+              <View style={styles.inputContainer}>
                 <Text emphasis="bold" style={styles.locationText}>
                   Name
                 </Text>
-                <TextInput 
+                <TextInput
                   style={styles.deviceType}
                   placeholder={customerName}
                 />
-                </View>
-                <View style={styles.deviceTypeContainer}>
                 <Text emphasis="bold" style={styles.locationText}>
                   Phone
                 </Text>
-                {/* <View style={{flexDirection: 'row', flex: 1}}> */}
+                <View style={{flexDirection: 'row', flex: 1}}>
                   <TextInput
                     editable={editable}
-                    // style={(styles.deviceType, {flex: 8})}
-                    style={styles.deviceType}
+                    style={(styles.deviceType, {flex: 8})}
                     placeholder={customerPhone}
                   />
-                </View>
-                  
-                {/* </View> */}
-                <View style={styles.deviceTypeContainer}>
-                <Text emphasis="bold" style={styles.locationText}>
-                  Address
-                </Text>
-                <TextInput
-                  style={styles.deviceType}
-                  placeholder="FPT University, District 9, HCM city"
-                />
-                
-              
-                <TouchableOpacity
-                  onPress={() => {
-                    NavigationService.navigate ('MapPickerScreen');
-                  }}
-                >
-                  <MaterialCommunityIcons style={styles.icon} name="google-maps" size={35} color="black" />
-                  {/* <View
-                    // style={[
-                    //   styles.button,
-                    //   {
-                    //     backgroundColor: '#3ddc84',
-                    //     width: '70%',
-                    //     alignItems: 'center',
-                    //     justifyContent: 'center',
-                    //     borderColor: '#fff',
-                    //     marginLeft: 50,
-                    //   },
-                    // ]}
-                  > */}
-                    {/* <Text style={{color: '#fff', padding: 5}}>
-                      Pick Location On Maps
-                    </Text> */}
-                  {/* </View> */}
-                </TouchableOpacity>
-
-                
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <View style={{width: '100%', alignItems: 'center'}}>
-              <TouchableOpacity
+                  <TouchableOpacity
                     onPress={() => {
                       if (editable) {
                         this.setState ({editable: false});
@@ -240,23 +189,58 @@ export default class Req extends Component {
                     }}
                   >
                     <View
-                       style={[
-                         styles.button,
-                          {
-                            backgroundColor: '#3ddc84',
-                            width: '25%',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                           borderColor: '#fff',
+                      style={[
+                        styles.button,
+                        {
+                          backgroundColor: '#3ddc84',
+                          width: '70%',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderColor: '#fff',
                         },
-                     ]} 
+                      ]}
                     >
-                      <Text style={{color: '#fff', padding: 5,}}>
+                      <Text style={{color: '#fff', padding: 5}}>
                         {btnEditText}
                       </Text>
                     </View>
                   </TouchableOpacity>
+                </View>
+                <Text emphasis="bold" style={styles.locationText}>
+                  Address
+                </Text>
+                <TextInput
+                  style={styles.deviceType}
+                  placeholder="FPT University, District 9, HCM city"
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    NavigationService.navigate ('MapPickerScreen');
+                  }}
+                >
+                  <View
+                    style={[
+                      styles.button,
+                      {
+                        backgroundColor: '#3ddc84',
+                        width: '70%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderColor: '#fff',
+                        marginLeft: 50,
+                      },
+                    ]}
+                  >
+                    <Text style={{color: '#fff', padding: 5}}>
+                      Pick Location On Maps
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
 
+            <View style={styles.buttonContainer}>
+              <View style={{width: '100%', alignItems: 'center'}}>
                 <TouchableOpacity
                   onPress={async () => {
                     await POST (ACCEPT_ORDER_ENDPOINT, {}, {}, param)
@@ -286,7 +270,7 @@ export default class Req extends Component {
                       borderColor: '#fff',
                     }}
                   >
-                    Send Request
+                    Gửi yêu cầu
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -304,7 +288,7 @@ const styles = StyleSheet.create ({
   },
   viewContainer: {flex: 1},
   titleContainer: {
-    height: 60,
+    height: 56,
     paddingHorizontal: '5%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -314,26 +298,20 @@ const styles = StyleSheet.create ({
   },
   formContainer: {
     paddingHorizontal: '5%',
-    marginTop: 50,
-    justifyContent: 'center'
-    
+    marginTop: 20,
   },
   headerContainer: {
     width: '70%',
-    height: 30,
     alignItems: 'center',
-    //backgroundColor: '#F56258',
-    //borderRadius: 15,
+    backgroundColor: '#F56258',
+    borderRadius: 15,
     zIndex: 2,
     padding: 5,
-    //marginLeft: -2,
-    marginBottom: -15
+    marginLeft: 52,
   },
   headerText: {
-    fontSize: 18,
-    color: 'black',
-    backgroundColor: 'white',
-    fontWeight : "800"
+    fontSize: 15,
+    color: '#fff',
   },
   inputContainer: {
     borderColor: 'black',
@@ -341,22 +319,8 @@ const styles = StyleSheet.create ({
     borderRadius: 10,
     paddingHorizontal: '5%',
     paddingTop: 20,
-    //paddingBottom: -10,
+    marginTop: -12,
     zIndex: 1,
-    justifyContent: 'center',
-    
-  },
-  inputContainer2: {
-    height: 160,
-    borderColor: 'black',
-    borderWidth: 1.5,
-    borderRadius: 10,
-    paddingHorizontal: '5%',
-    //paddingTop: 20,
-    //paddingBottom: -10,
-    zIndex: 1,
-    justifyContent: 'center',
-    
   },
   locationNote: {
     fontSize: 16,
@@ -367,7 +331,6 @@ const styles = StyleSheet.create ({
   },
   locationText: {
     fontSize: 16,
-    marginTop: 5
   },
   deviceType: {
     fontSize: 16,
@@ -375,24 +338,14 @@ const styles = StyleSheet.create ({
     borderBottomWidth: 1.5,
     padding: 0,
     marginBottom: 10,
-    width: 200,
-    maxWidth: '100%',
-    marginLeft: 10,
-    
   },
   detailErr: {
     fontSize: 16,
     borderBottomColor: '#ebebeb',
     borderBottomWidth: 1.5,
     padding: 0,
-    //paddingBottom: 5,
-    //marginTop: 10,
-    marginBottom: 10,
-    width: 200,
-    maxWidth: '100%',
-    marginLeft: 35,
-   
-
+    marginTop: 10,
+    marginBottom: 20,
   },
   buttonContainer: {
     marginTop: 20,
@@ -406,20 +359,6 @@ const styles = StyleSheet.create ({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: '6%',
-    borderRadius: 20,
+    borderRadius: 17,
   },
-  deviceTypeContainer: {
-    width: 330,
-    height: 40,
-    //borderColor: 'black',
-    //borderWidth: 1,
-    flexDirection: 'row',
-    marginTop: 10
-  },
-  descriptionContainer: {
-    flexDirection: 'row'
-  },
-  icon: {
-    marginLeft: 20
-  }
 });

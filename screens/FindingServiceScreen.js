@@ -26,7 +26,6 @@ const width = Dimensions.get ('screen').width;
 class Body extends React.Component {
   handleAccept = async () => {
     let orderId = await AsyncStorage.getItem ('orderId');
-    console.l
     await PUT (
       ACCEPT_ORDER_ENDPOINT + '/' + orderId,
       {},

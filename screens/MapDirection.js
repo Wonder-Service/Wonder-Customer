@@ -177,7 +177,7 @@ export default class MapDirection extends Component {
             <MapViewDirections
               origin={currentLocation.coords}
               destination={destinationCoords}
-              apikey={'AIzaSyBF3Kg42z_Q3fVAwJdnuOgxLCcZAj3K56E'}
+              apikey={''}
               strokeWidth={3}
               strokeColor="blue"
               errorMessage={error => {

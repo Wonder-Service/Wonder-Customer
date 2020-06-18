@@ -11,6 +11,8 @@ import RequestDetailScreen from "./screens/RequestDetailScreen";
 import NotificationServiceScreen from "./screens/NotificationServiceScreen"
 import MapPickerScreen from "./screens/MapPickerScreen"
 import FeedBackScreen from "./screens/FeedBackScreen"
+import HistoryOrderScreen from "./screens/HistoryOrderScreen"
+import ProfileScreen from "./screens/ProfileScreen"
 import { AppLoading } from 'expo';
 import MapDirection from "./screens/MapDirection"
 
@@ -85,9 +87,25 @@ const Container = createStackNavigator(
       },
     },
 
+    ProfileScreen: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+
+    HistoryOrderScreen: {
+      screen: HistoryOrderScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+
   },
   {
-    initialRouteName: "Login"
+    initialRouteName: "Login",
   }
 );
 
