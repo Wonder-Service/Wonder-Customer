@@ -51,7 +51,12 @@ export default class HomeScreen extends React.Component {
             }}
           />
           <ButtonImage text="History Jobs" icon={Images.fixxerIcon} />
-          <ButtonImage text="Profile" icon={Images.fixxerIcon} />
+          <ButtonImage text="Profile" 
+            icon={Images.fixxerIcon}
+            onPress={() => {
+              NavigationService.navigate("ProfileScreen");
+          }}
+          />
         </View>
       </View>
     );
