@@ -42,7 +42,7 @@ export default class ProfileScreen extends Component{
 
     // not have history order Screen yet
   handleHistoryOrderButton = () => {
-    NavigationService.navigate("HistoryOrderScreen")
+    NavigationService.navigate("HistoryScreen")
   }
 
 
