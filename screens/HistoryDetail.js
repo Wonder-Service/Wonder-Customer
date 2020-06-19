@@ -34,7 +34,7 @@ export default class HistoryDetail extends React.Component {
         await this.setState({
             orderId: this.props.navigation.getParam('orderId', 2)
         })
-        console.log("orderId" + this.state.orderId)
+
         await GET(
             ACCEPT_ORDER_ENDPOINT + '/' + this.state.orderId,
             {},
@@ -48,14 +48,7 @@ export default class HistoryDetail extends React.Component {
                 status: resJson.status,
                 totalCredit: resJson.totalCredit,
                 feedback: resJson.feedback,
-            });
-            console.log(this.state.status)
-            console.log(this.state.rate)
-            console.log(this.state.dateCreate)
-            console.log(this.state.description)
-            console.log(this.state.totalCredit)
-            console.log(this.state.feedback)
-            console.log(this.state.nameDevice)
+            })
         })
         // })
     }
@@ -218,8 +211,15 @@ export default class HistoryDetail extends React.Component {
             }
 
             default: {
-                return (<View>
-                    <Text>safalkdjflksfj</Text>
+                return (<View style={{
+                    flex: 1,
+                    backgroundColor: '#edebe9',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <View>
+                        <ActivityIndicator/>
+                    </View>
                 </View>)
             }
         }
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#edebe9',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: 20,
+        // paddingTop: 20,
     },
     image: {
         width: 52,
@@ -335,6 +335,6 @@ const styles = StyleSheet.create({
     profile: {
         marginLeft: '7%',
         alignItems: 'center'
-    
+
     }
 });

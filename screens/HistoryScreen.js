@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, FlatList, ActivityIndicator, ListView, RefreshControl, Image, TouchableHighlight, AsyncStorage } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { POST, GET } from '../api/caller';
-import { ACCEPT_ORDER_ENDPOINT, FEEDBACK_ENDPOINT } from '../api/endpoint';
+import { CUSTOMER_ORDER_ENDPOINT } from '../api/endpoint';
 import NavigationService from '../service/navigation';
 import { Icon } from 'react-native-elements';
 import ProfileScreen from './ProfileScreen';
@@ -36,7 +36,6 @@ class FlatListItem extends Component {
         return (
           <TouchableHighlight onPress={() => {
             this.handlerSelectCatogery(this.props.item.id)
-            console.log(this.props.item.id)
           }
           }>
             <View style={styles.itemHandle}>
@@ -101,7 +100,7 @@ export default class HistoryScreen extends Component {
   async componentDidMount() {
     // let jwt = await AsyncStorage.getItem ('jwt');
     await GET(
-      ACCEPT_ORDER_ENDPOINT,
+      CUSTOMER_ORDER_ENDPOINT,
       {},
       {},
     ).then((resJson) => {
@@ -144,8 +143,6 @@ export default class HistoryScreen extends Component {
           <FlatList
             data={this.state.listOrder}
             renderItem={({ item, index }) => {
-              // console.log('Item =' + JSON.stringify(item));
-              // console.log('Index =' + index)
               return (
                 <FlatListItem item={item} index={index}></FlatListItem>
               )
@@ -164,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 20,
+    // paddingTop: 20,
   },
   itemHandel: {
     backgroundColor: '#eee',
