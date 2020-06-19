@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, FlatList, ActivityIndicator, ListView, RefreshControl, Image, TouchableHighlight, AsyncStorage } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { POST, GET } from '../api/caller';
-import { CUSTOMER_ORDER_ENDPOINT } from '../api/endpoint';
+import { CUSTOMER_ORDER_ENDPOINT, ACCEPT_ORDER_ENDPOINT } from '../api/endpoint';
 import NavigationService from '../service/navigation';
 import { Icon } from 'react-native-elements';
 import ProfileScreen from './ProfileScreen';
@@ -103,7 +103,7 @@ export default class HistoryScreen extends Component {
   async componentDidMount() {
     // let jwt = await AsyncStorage.getItem ('jwt');
     await GET(
-      CUSTOMER_ORDER_ENDPOINT,
+      ACCEPT_ORDER_ENDPOINT,
       {},
       {},
     ).then((resJson) => {
