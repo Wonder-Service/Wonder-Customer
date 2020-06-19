@@ -128,7 +128,7 @@ export default class HistoryScreen extends Component {
           alignItems: 'center',
           justifyContent: 'center',}}>
           <View>
-            <ActivityIndicator />
+            <ActivityIndicator size="large" />
           </View>
         </View>
       );
