@@ -123,7 +123,10 @@ export default class HistoryScreen extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={styles.container}>
+        <View style={{flex: 1,
+          backgroundColor: '#fff',
+          alignItems: 'center',
+          justifyContent: 'center',}}>
           <View>
             <ActivityIndicator />
           </View>
