@@ -103,7 +103,7 @@ export default class HistoryScreen extends Component {
   async componentDidMount() {
     // let jwt = await AsyncStorage.getItem ('jwt');
     await GET(
-      ACCEPT_ORDER_ENDPOINT,
+      CUSTOMER_ORDER_ENDPOINT,
       {},
       {},
     ).then((resJson) => {
