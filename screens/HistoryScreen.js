@@ -104,10 +104,10 @@ export default class HistoryScreen extends Component {
       {},
       {},
     ).then((resJson) => {
-      console.log(resJson.id)
+      console.log(resJson)
       for (var i = 0; i < resJson.length; i++) {
         this.state.listOrder.push(resJson[i])
-        console.log(this.state.listOrder.id)
+        console.log("Listorder:" + i + this.state.listOrder)
       }
 
       this.setState({
