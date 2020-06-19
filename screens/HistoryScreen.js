@@ -41,7 +41,7 @@ class FlatListItem extends Component {
             <View style={styles.itemHandle}>
               <Image source={require('../assets/images/processing.png')} style={styles.image} />
               <View style={{ flex: 1, flexDirection: 'column' }}>
-              <Text style={styles.title}>{this.props.item.id}</Text>
+              <Text style={{fontSize: 22, fontWeight: "700", color: 'red'}}>{this.props.item.id}</Text>
                 <Text style={styles.title}>{this.props.item.workDescription.description}</Text>
                 <Text style={styles.subtitle}>{this.props.item.workDescription.dateCreated}</Text>
               </View>
@@ -108,7 +108,7 @@ export default class HistoryScreen extends Component {
       console.log(resJson)
       for (var i = 0; i < resJson.length; i++) {
         this.state.listOrder.push(resJson[i])
-        console.log("Listorder:" + i + this.state.listOrder)
+        console.log("Listorder:" + i + this.state.listOrder.id)
       }
 
       this.setState({
