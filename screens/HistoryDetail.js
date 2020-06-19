@@ -213,16 +213,11 @@ export default class HistoryDetail extends React.Component {
             }
 
             default: {
-                return (<View style={{
-                    flex: 1,
-                    backgroundColor: '#edebe9',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
+                return (
                     <View>
                         <ActivityIndicator/>
                     </View>
-                </View>)
+                )
             }
         }
     }
