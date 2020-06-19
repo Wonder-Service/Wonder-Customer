@@ -40,6 +40,7 @@ export default class HistoryDetail extends React.Component {
             {},
             {},
         ).then((resJson) => {
+            
             this.setState({
                 description: resJson.workDescription.description,
                 dateCreated: resJson.workDescription.dateCreated,
@@ -50,6 +51,7 @@ export default class HistoryDetail extends React.Component {
                 feedback: resJson.feedback,
             })
         })
+        
         // })
     }
 
