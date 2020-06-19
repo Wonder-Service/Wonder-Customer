@@ -10,11 +10,12 @@ import ProfileScreen from './ProfileScreen';
 class FlatListItem extends Component {
   handlerSelectCatogery = (orderId) => {
     NavigationService.navigate("HistoryDetail", { orderId: orderId })
+    console.log(orderId)
   }
-  
+
   render() {
     switch (this.props.item.status) {
-      
+
       case 'COMPLETED': {
         return (
           <TouchableHighlight onPress={() => {
@@ -41,7 +42,7 @@ class FlatListItem extends Component {
             <View style={styles.itemHandle}>
               <Image source={require('../assets/images/processing.png')} style={styles.image} />
               <View style={{ flex: 1, flexDirection: 'column' }}>
-              <Text style={{fontSize: 22, fontWeight: "700", color: 'red'}}>{this.props.item.id}</Text>
+                <Text style={{ fontSize: 22, fontWeight: "700", color: 'red' }}>{this.props.item.id}</Text>
                 <Text style={styles.title}>{this.props.item.workDescription.description}</Text>
                 <Text style={styles.subtitle}>{this.props.item.workDescription.dateCreated}</Text>
               </View>
@@ -65,8 +66,8 @@ class FlatListItem extends Component {
           </TouchableHighlight>
         );
       }
-      default:{
-        return(
+      default: {
+        return (
           <View>
             <Text>{this.props.item.status}</Text>
             <Text>{this.props.item.id}</Text>
@@ -105,7 +106,7 @@ export default class HistoryScreen extends Component {
       {},
       {},
     ).then((resJson) => {
-      console.log(resJson)
+      console.log(resJson.id)
       for (var i = 0; i < resJson.length; i++) {
         this.state.listOrder.push(resJson[i])
         console.log("Listorder:" + i + this.state.listOrder.id)
@@ -121,8 +122,10 @@ export default class HistoryScreen extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <View>
-          <ActivityIndicator />
+        <View style={styles.container}>
+          <View>
+            <ActivityIndicator />
+          </View>
         </View>
       );
     }
@@ -130,16 +133,16 @@ export default class HistoryScreen extends Component {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <View style={styles.bgHeader}>
-            <TouchableHighlight onPress={() => NavigationService.navigate("ProfileScreen")}>
-                <View style={styles.profile}>
-                    <Icon
-                        name='arrow-left'
-                        type='font-awesome-5'
-                        color='#000'
-                    />
-                </View>
-            </TouchableHighlight>
-            <Text style={styles.headerStyle}>History orders</Text>
+          <TouchableHighlight onPress={() => NavigationService.navigate("ProfileScreen")}>
+            <View style={styles.profile}>
+              <Icon
+                name='arrow-left'
+                type='font-awesome-5'
+                color='#000'
+              />
+            </View>
+          </TouchableHighlight>
+          <Text style={styles.headerStyle}>History orders</Text>
 
         </View>
         <View style={{ flex: 1, width: '100%' }}>
@@ -227,16 +230,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     flexDirection: 'row',
     position: 'relative'
-},
-headerStyle: {
+  },
+  headerStyle: {
     fontSize: 25,
     textAlign: 'center',
     marginLeft: '1%',
     color: '#000',
-},
-profile: {
+  },
+  profile: {
     marginLeft: '7%',
     alignItems: 'center'
 
-}
+  }
 });
