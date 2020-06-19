@@ -97,9 +97,6 @@ export default class HistoryScreen extends Component {
       
     });
   }
-  state = {
-    id: 0,
-  }
 
 
 
@@ -110,9 +107,10 @@ export default class HistoryScreen extends Component {
       {},
       {},
     ).then((resJson) => {
-      console.log("resjson" + resJson.id)
+      
       for (var i = 0; i < resJson.length; i++) {
         this.state.listOrder.push(resJson[i])
+        console.log("ListOrder " + resJson[i].id)
       }
 
       this.setState({
