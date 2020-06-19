@@ -57,7 +57,7 @@ export default class LoginScreen extends Component {
               }
             ).then(res => 
                 {
-                  NavigationService.navigate('HomeScreen')
+                  NavigationService.navigate("HomeScreenV2")
                 }
               )
               .catch (error => {
