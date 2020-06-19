@@ -47,10 +47,10 @@ export default class ProfileScreen extends Component{
 
 
   handleUpdate = async () =>{
-    console.log()
-    console.log(this.state.id)
-    console.log(this.state.phone)
-    console.log(this.state.email)
+    // console.log()
+    // console.log(this.state.id)
+    // console.log(this.state.phone)
+    // console.log(this.state.email)
     let id = this.state.id
     await PUT(USER_ENDPOINT + "/"+ id,{},{},{
       address: this.state.address,
@@ -78,10 +78,10 @@ export default class ProfileScreen extends Component{
                     address: res[0].address,
                   
                 })
-                console.log(this.state.fullName)
-              console.log(this.state.email)
-              console.log(this.state.id)
-              console.log(this.state.phone)
+              //   console.log(this.state.fullName)
+              // console.log(this.state.email)
+              // console.log(this.state.id)
+              // console.log(this.state.phone)
               
                 
         
