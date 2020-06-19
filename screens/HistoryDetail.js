@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, AsyncStorage, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, AsyncStorage, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { Rating, AirbnbRating } from 'react-native-elements';
 import { GET } from '../api/caller';
 import NavigationService from '../service/navigation';
@@ -214,8 +214,12 @@ export default class HistoryDetail extends React.Component {
 
             default: {
                 return (
-                    <View>
-                        <ActivityIndicator/>
+                    <View style={{flex: 1,
+                        backgroundColor: '#edebe9',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        }}>
+                        <ActivityIndicator size="large"/>
                     </View>
                 )
             }
