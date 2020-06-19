@@ -94,7 +94,11 @@ export default class HistoryScreen extends Component {
     this.state = ({
       isLoading: true,
       listOrder: [],
+      
     });
+  }
+  state = {
+    id: 0,
   }
 
 
@@ -114,6 +118,7 @@ export default class HistoryScreen extends Component {
 
       this.setState({
         isLoading: false,
+        id: resJson.id,
       });
     })
   }
