@@ -101,7 +101,6 @@ export default class ProfileScreen extends Component{
 
                 <Text
                   style={{
-                    fontFamily: "Roboto",
                     fontSize: 30,
                     marginTop: 50,
                     marginLeft: 20,
@@ -113,18 +112,25 @@ export default class ProfileScreen extends Component{
               </View>
 
               <View style={styles.profileBody}>
-                <Image
+
+                <View 
                   style={{
-                    marginLeft: 100,
-                    marginTop: -80,
-                    width:150,
-                    height:150,
-                    borderRadius:100,
-                  }}
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                  }}>
+                <Image
+                    style={{
+                      marginTop: -80,
+                      width: 150,
+                      height: 150,
+                      borderRadius: 100,
+                      }}
                   source={{
                     uri: 'https://www.clipartwiki.com/clipimg/full/146-1460660_handyman-clipart-hardware-store-mr-fix-it-logo.png',
                   }}
                 />
+                </View>
 
                 {/* Add Full name */}
                 <View
@@ -202,7 +208,6 @@ export default class ProfileScreen extends Component{
                       marginTop: -10,
                       marginLeft: 15,
                       fontSize: 16,
-                      fontFamily: "Roboto",
                       borderBottomColor: borderBottomColorProfile, 
                       }}
                     onChangeText={text => {
@@ -237,7 +242,6 @@ export default class ProfileScreen extends Component{
                       marginTop: -10,
                       marginLeft: 15,
                       fontSize: 16,
-                      fontFamily: "Roboto",
                       borderBottomColor: borderBottomColorProfile, 
                       }}
                     onChangeText={text => {
@@ -270,7 +274,6 @@ export default class ProfileScreen extends Component{
                       marginTop: -10,
                       marginLeft: 15,
                       fontSize: 16,
-                      fontFamily: "Roboto",
                       borderBottomColor: borderBottomColorProfile, 
                       }}
                     onChangeText={text => {
@@ -298,7 +301,6 @@ export default class ProfileScreen extends Component{
                     width: "75%",
                     marginLeft: 14,
                     fontSize: 16,
-                    fontFamily: "Roboto",
                   }}>History</Text>
                   </TouchableOpacity>
 
@@ -320,7 +322,6 @@ export default class ProfileScreen extends Component{
                     width: "75%",
                     marginLeft: 14,
                     fontSize: 16,
-                    fontFamily: "Roboto",
                   }}>Logout</Text>
                 </TouchableOpacity>
 
@@ -404,7 +405,6 @@ const styles = StyleSheet.create({
     
     userHeader: {
         fontSize: 24,
-        fontFamily: "Roboto",
         marginTop: 15,
         justifyContent: "center",
     },
@@ -416,7 +416,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginLeft: 30,
         fontSize: 25,
-        fontFamily: "Roboto",
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
