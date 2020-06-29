@@ -101,7 +101,6 @@ export default class ProfileScreen extends Component{
 
                 <Text
                   style={{
-                    fontFamily: "Roboto",
                     fontSize: 30,
                     marginTop: 50,
                     marginLeft: 20,
@@ -209,7 +208,6 @@ export default class ProfileScreen extends Component{
                       marginTop: -10,
                       marginLeft: 15,
                       fontSize: 16,
-                      fontFamily: "Roboto",
                       borderBottomColor: borderBottomColorProfile, 
                       }}
                     onChangeText={text => {
@@ -244,7 +242,6 @@ export default class ProfileScreen extends Component{
                       marginTop: -10,
                       marginLeft: 15,
                       fontSize: 16,
-                      fontFamily: "Roboto",
                       borderBottomColor: borderBottomColorProfile, 
                       }}
                     onChangeText={text => {
@@ -277,7 +274,6 @@ export default class ProfileScreen extends Component{
                       marginTop: -10,
                       marginLeft: 15,
                       fontSize: 16,
-                      fontFamily: "Roboto",
                       borderBottomColor: borderBottomColorProfile, 
                       }}
                     onChangeText={text => {
@@ -305,7 +301,6 @@ export default class ProfileScreen extends Component{
                     width: "75%",
                     marginLeft: 14,
                     fontSize: 16,
-                    fontFamily: "Roboto",
                   }}>History</Text>
                   </TouchableOpacity>
 
@@ -327,7 +322,6 @@ export default class ProfileScreen extends Component{
                     width: "75%",
                     marginLeft: 14,
                     fontSize: 16,
-                    fontFamily: "Roboto",
                   }}>Logout</Text>
                 </TouchableOpacity>
 
@@ -411,7 +405,6 @@ const styles = StyleSheet.create({
     
     userHeader: {
         fontSize: 24,
-        fontFamily: "Roboto",
         marginTop: 15,
         justifyContent: "center",
     },
@@ -423,7 +416,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginLeft: 30,
         fontSize: 25,
-        fontFamily: "Roboto",
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
