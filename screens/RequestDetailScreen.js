@@ -32,6 +32,7 @@ export default class Req extends Component {
     addressDetail: null,
     customerPhone: null,
     customerName: null,
+    isPikerMap: false,
   };
 
   async componentDidMount () {
@@ -49,6 +50,7 @@ export default class Req extends Component {
               longitude: this.props.navigation.getParam ('picklongitude'),
             },
           });
+          await console.log(this.state.pickCoords)
         } catch (e) {
           console.log ('ReqeustDetailScreen getParam navigation:' + e);
         }
@@ -63,13 +65,18 @@ export default class Req extends Component {
             console.log ('ReqeustDetailScreen apiget User ERROR');
             console.log (error);
           });
-      }
+      },
+
     );
+    await AsyncStorage.setItem('isPickerMap', this.state.isPikerMap + '')
   }
 
-  handleRequest = () => {
-    //
-  };
+  handlePickerMap = async () => {
+    await this.setState({
+      isPikerMap: true,
+    })
+    await AsyncStorage.setItem('isPickerMap', this.state.isPikerMap + '')
+  }
 
   render () {
     const {
@@ -164,7 +171,7 @@ export default class Req extends Component {
                 <Text emphasis="bold" style={styles.locationText}>
                   Name
                 </Text>
-                <TextInput 
+                <TextInput
                   style={styles.deviceType}
                   placeholder={customerName}
                 />
@@ -181,7 +188,7 @@ export default class Req extends Component {
                     placeholder={customerPhone}
                   />
                 </View>
-                  
+
                 {/* </View> */}
                 <View style={styles.deviceTypeContainer}>
                 <Text emphasis="bold" style={styles.locationText}>
@@ -191,11 +198,12 @@ export default class Req extends Component {
                   style={styles.deviceType}
                   placeholder="FPT University, District 9, HCM city"
                 />
-                
-              
+
+
                 <TouchableOpacity
                   onPress={() => {
                     NavigationService.navigate ('MapPickerScreen');
+                    this.handlePickerMap();
                   }}
                 >
                   <MaterialCommunityIcons style={styles.icon} name="google-maps" size={35} color="black" />
@@ -218,7 +226,7 @@ export default class Req extends Component {
                   {/* </View> */}
                 </TouchableOpacity>
 
-                
+
                 </View>
               </View>
             </View>
@@ -249,7 +257,7 @@ export default class Req extends Component {
                             justifyContent: 'center',
                            borderColor: '#fff',
                         },
-                     ]} 
+                     ]}
                     >
                       <Text style={{color: '#fff', padding: 5,}}>
                         {btnEditText}
@@ -262,7 +270,7 @@ export default class Req extends Component {
                     await POST (ACCEPT_ORDER_ENDPOINT, {}, {}, param)
                       .then ( async (res) => {
                         await AsyncStorage.setItem('orderId', res.orderId+ '')
-                        NavigationService.navigate ('FindingServiceScreen');
+                        NavigationService.navigate ('FindingServiceScreen', pickCoords);
                       })
                       .catch (error => {
                       });
@@ -316,7 +324,7 @@ const styles = StyleSheet.create ({
     paddingHorizontal: '5%',
     marginTop: 50,
     justifyContent: 'center'
-    
+
   },
   headerContainer: {
     width: '70%',
@@ -344,7 +352,7 @@ const styles = StyleSheet.create ({
     //paddingBottom: -10,
     zIndex: 1,
     justifyContent: 'center',
-    
+
   },
   inputContainer2: {
     height: 160,
@@ -356,7 +364,7 @@ const styles = StyleSheet.create ({
     //paddingBottom: -10,
     zIndex: 1,
     justifyContent: 'center',
-    
+
   },
   locationNote: {
     fontSize: 16,
@@ -378,7 +386,7 @@ const styles = StyleSheet.create ({
     width: 200,
     maxWidth: '100%',
     marginLeft: 10,
-    
+
   },
   detailErr: {
     fontSize: 16,
@@ -391,7 +399,7 @@ const styles = StyleSheet.create ({
     width: 200,
     maxWidth: '100%',
     marginLeft: 35,
-   
+
 
   },
   buttonContainer: {

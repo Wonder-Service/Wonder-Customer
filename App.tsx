@@ -17,6 +17,9 @@ import MapDirection from "./screens/MapDirection";
 import ProfileScreen from "./screens/ProfileScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import HistoryDetail from "./screens/HistoryDetail";
+import SplashScreen from "./screens/SplashScreen";
+import SigninScreen from "./screens/SigninScreen";
+import SignupScreen from  "./screens/SignupScreen";
 
 import * as Font from 'expo-font';
 
@@ -25,7 +28,21 @@ import * as Font from 'expo-font';
 const Container = createStackNavigator(
   {
     Login: {
-      screen: Login,
+      screen: SigninScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+    SignUp: {
+      screen: SignupScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+    Splash: {
+      screen: SplashScreen,
       navigationOptions: {
         header: null,
         gesturesEnabled: false,
@@ -119,7 +136,7 @@ const Container = createStackNavigator(
 
   },
   {
-    initialRouteName: "Login"
+    initialRouteName: "Splash"
   }
 );
 
@@ -159,7 +176,7 @@ export default class App extends React.Component {
         />
       );
     }
-    
+
   }
 
 }

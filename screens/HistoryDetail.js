@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, SafeAreaView, StatusBar, AsyncStorage, TouchableHighlight, ActivityIndicator } from 'react-native';
-import { Rating, AirbnbRating } from 'react-native-elements';
+import { Rating} from 'react-native-elements';
 import { GET } from '../api/caller';
 import NavigationService from '../service/navigation';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -59,7 +59,7 @@ export default class HistoryDetail extends React.Component {
             {},
         ).then((resWorker) => {
             this.setState({
-                workerName: resWorker.username
+                workerName: resWorker.fullname
             })
         })
         

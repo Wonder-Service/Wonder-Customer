@@ -1,7 +1,7 @@
 import React from 'react';
 import MapView, {Marker} from 'react-native-maps';
 
-import {StyleSheet, View, Dimensions, Text, Button} from 'react-native';
+import {StyleSheet, View, Dimensions, Text, Button, AsyncStorage} from 'react-native';
 import {TouchableOpacity, TextInput} from 'react-native-gesture-handler';
 import NavigationService from './../service/navigation';
 import {GET} from '../api/caller';
@@ -28,7 +28,10 @@ export default class MapPickerScreen extends React.Component {
           picklongitude: e.nativeEvent.coordinate.longitude,
         },
       });
-      console.log (this.state.pickCoords);
+      await AsyncStorage.setItem('picklatitude', e.nativeEvent.coordinate.latitude + '')
+      await AsyncStorage.setItem('pickLongitude', e.nativeEvent.coordinate.longitude + '' )
+
+      // console.log (this.state.pickCoords);
     };
   };
   handlePickerCoodrs = () => {

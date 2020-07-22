@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 import MapViewDirections from 'react-native-maps-directions';
+import { PUT } from '../api/caller';
 import NavigationService from '../service/navigation';
 import {
   StyleSheet,
@@ -14,7 +15,7 @@ import {
 } from 'react-native';
 import * as firebase from 'firebase';
 
-import {POST, POSTLOGIN, GET} from '../api/caller';
+import { POST, POSTLOGIN, GET } from '../api/caller';
 import {
   CANCEL_ORDER_ENDPOINT,
   POST_NOTIFICATION_ENDPOINT,
@@ -22,7 +23,7 @@ import {
   ACCEPT_ORDER_ENDPOINT,
 } from '../api/endpoint';
 import DropdownAlert from 'react-native-dropdownalert';
-import {Notifications} from 'expo';
+import { Notifications } from 'expo';
 
 var firebaseConfig = {
   apiKey: 'AIzaSyCkUqpsRdN83jH8o2y5ZfQ6VHYOydEPOSQ',
@@ -36,9 +37,13 @@ var firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp (firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 export default class MapDirection extends Component {
+  constructor (props) {
+    super (props);
+  }
+
   state = {
     latitude: 10,
     longitude: 104,
@@ -57,41 +62,54 @@ export default class MapDirection extends Component {
   };
 
   handleNotification = async noti => {
-    this.setState ({notification: noti});
+    this.setState({ notification: noti });
     switch (notification.data.notificationType === NOTIFICATION_TYPE_REQEST) {
       case NOTIFICATION_TYPE_CANCEL:
-        NavigationService.navigate ('HomeScreen');
+        NavigationService.navigate('HomeScreenV2');
         break;
       case NOTIFICATION_TYPE_COMPELETE:
-        NavigationService.navigate ('FeedBackScreen');
+        NavigationService.navigate('FeedBackScreen');
         break;
     }
   };
 
-  async componentDidMount () {
-    const {status} = await Permissions.askAsync (Permissions.LOCATION);
-
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    const latitudePicked = await AsyncStorage.getItem('picklatitude');
+    const longitudePicked = await AsyncStorage.getItem('pickLongitude');
+    const isPicked = await AsyncStorage.getItem('isPickerMap');
+    console.log("checkPicker", isPicked)
     if (status != 'granted') {
-      const response = await Permissions.askAsync (Permissions.LOCATION);
+      const response = await Permissions.askAsync(Permissions.LOCATION);
     }
 
-    const location = await Location.getCurrentPositionAsync ({});
+    if (isPicked === "false") {
+      const location = await Location.getCurrentPositionAsync({});
+      this.setState({ currentLocation: location });
+      this.setState({ address: this.props.navigation.getParam('address') });
+    } else {
+      this.setState({
+        currentLocation: {
+          coords: {
+            latitude: +latitudePicked,
+            longitude: +longitudePicked
+          }
+        },
+      });
+    }
 
-    this.setState ({currentLocation: location});
-    this.setState ({address: this.props.navigation.getParam ('address')});
+    // this.setState({
+    //   destinationCoords: this.props.navigation.getParam('coords'),
+    // });
 
-    this.setState ({
-      destinationCoords: this.props.navigation.getParam ('coords'),
+    this._notificationSubscription = Notifications.addListener(noti => {
+      this.handleNotification(noti);
     });
-
-    this._notificationSubscription = Notifications.addListener (noti => {
-      this.handleNotification (noti);
-    });
-    this.readWorkerCoords ();
-    console.log ('Mapdirection On');
+    this.readWorkerCoords();
+    console.log('Mapdirection On');
   }
 
-  async componentDidUpdate (prevProps) {
+  async componentDidUpdate(prevProps) {
     if (prevProps.isFocused !== this.props.isFocused) {
       // let orderId = await AsyncStorage.getItem('orderId');
       // GET(ACCEPT_ORDER_ENDPOINT+ '/'+ orderId, {} ,{})
@@ -108,45 +126,41 @@ export default class MapDirection extends Component {
       //     }
       //   }
       // )
-      console.log ('Mapdirection On');
-      this.readWorkerCoords ();
+      console.log('Mapdirection On');
+      this.readWorkerCoords();
     }
   }
 
-  async readWorkerCoords ()  {
+  async readWorkerCoords() {
     const workerDeviceId = await AsyncStorage.getItem('worker_device_id');
     // consHt workerDeviceId = '_I9054NjcBrONYHt2Vja44';
-    let coordsRef = firebase.database ().ref ('/' + workerDeviceId);
-    coordsRef.on ('value', snapshot => {
-      this.setState ({
+    let coordsRef = firebase.database().ref('/' + workerDeviceId);
+    coordsRef.on('value', snapshot => {
+      this.setState({
         destinationCoords: {
-          latitude: snapshot.val ().latitude,
-          longitude: snapshot.val ().longitude, 
+          latitude: snapshot.val().latitude,
+          longitude: snapshot.val().longitude,
         },
       });
     });
   }
 
   handleCancel = async () => {
-    let orderId = await AsyncStorage.getItem ('orderId');
-    await POSTLOGIN (
-      CANCEL_ORDER_ENDPOINT,
+    let orderNewId = await AsyncStorage.getItem('orderId');
+    await PUT(
+      ACCEPT_ORDER_ENDPOINT,
       {},
       {},
       {
-        notificationType: NOTIFICATION_TYPE_CANCEL,
-        orderId: orderId,
+        id: orderNewId,
+        status: 'CANCELED',
       }
-    ).then (res => {
-      if (res.status === 200) {
-        this.props.navigation.navigate('RequestDetailScreen');
-      } else {
-        DropdownAlert.alertWithType ('error', 'Error Message', res.status);
-      }
-    });
+    ).then(res => {
+      NavigationService.navigate('HomeScreenV2');
+    })
   };
 
-  render () {
+  render() {
     const {
       latitude,
       longitude,
@@ -177,16 +191,16 @@ export default class MapDirection extends Component {
             <MapViewDirections
               origin={currentLocation.coords}
               destination={destinationCoords}
-              apikey={'AIzaSyBF3Kg42z_Q3fVAwJdnuOgxLCcZAj3K56E'}
+              apikey={'AIzaSyDn2ruHQmquB33aoQK3d0QLsGsN6bLLm1c'}
               strokeWidth={3}
               strokeColor="blue"
               errorMessage={error => {
-                console.log (error);
+                console.log(error);
               }}
             />
             <Marker
               coordinate={destinationCoords}
-              image={require ('../assets/images/car_1.png')}
+              image={require('../assets/images/car_1.png')}
             />
 
           </MapView>
@@ -200,7 +214,7 @@ export default class MapDirection extends Component {
     }
   }
 }
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column-reverse',
@@ -216,15 +230,15 @@ const styles = StyleSheet.create ({
     padding: 20,
     backgroundColor: '#fff',
     alignItems: 'center',
-    width: Dimensions.get ('screen').width,
-    height: Dimensions.get ('screen').height * 7 / 10,
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height * 7 / 10,
 
     // justifyContent: 'center',
   },
 
   groupButton: {
-    height: Dimensions.get ('screen').height / 2,
-    width: Dimensions.get ('screen').width * 9 / 10,
+    height: Dimensions.get('screen').height / 2,
+    width: Dimensions.get('screen').width * 9 / 10,
     backgroundColor: '#E5E5E5',
     alignItems: 'center',
     justifyContent: 'center',
@@ -242,7 +256,7 @@ const styles = StyleSheet.create ({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    width: Dimensions.get ('screen').width * 8 / 10,
+    width: Dimensions.get('screen').width * 8 / 10,
   },
   buttonCancelView: {
     padding: 15,
@@ -251,7 +265,7 @@ const styles = StyleSheet.create ({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    width: Dimensions.get ('screen').width * 8 / 10,
+    width: Dimensions.get('screen').width * 8 / 10,
   },
   buttonCompleteView: {
     padding: 15,
@@ -260,6 +274,6 @@ const styles = StyleSheet.create ({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    width: Dimensions.get ('screen').width * 8 / 10,
+    width: Dimensions.get('screen').width * 8 / 10,
   },
 });
