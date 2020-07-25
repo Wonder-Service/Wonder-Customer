@@ -20,8 +20,6 @@ const AcceptWokerPopup = (props) => {
 
   const handleAccept = async () => {
     let orderNewId = await AsyncStorage.getItem('orderId')
-    console.log(orderNewId)
-    console.log("worker", props.workerData.id)
     await PUT(
       ACCEPT_ORDER_ENDPOINT + '/' + orderNewId,
       {},
@@ -30,7 +28,6 @@ const AcceptWokerPopup = (props) => {
         workerId: props.workerData.id,
       }
     ).then(res => {
-      console.log(res)
       if (res.status === 200) {
         NavigationService.navigate('MapDirection');
       }

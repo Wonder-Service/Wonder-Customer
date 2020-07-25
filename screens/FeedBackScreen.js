@@ -7,6 +7,7 @@ import {
   Button,
   KeyboardAvoidingView,
   AsyncStorage,
+
 } from 'react-native';
 import { WORKER } from './FindingServiceScreen';
 import { Rating } from 'react-native-ratings';
@@ -31,7 +32,7 @@ export default class FeedBackScreen extends React.Component {
 
   async componentDidMount() {
     let orderNewId = await AsyncStorage.getItem('orderId')
-    
+
 
     await GET(
       ACCEPT_ORDER_ENDPOINT + '/' + orderNewId,
@@ -73,7 +74,6 @@ export default class FeedBackScreen extends React.Component {
     ).then(res => {
       NavigationService.navigate('HomeScreenV2');
     })
-    console.log(this.state.txtFeedBack)
   };
 
   render() {
@@ -210,7 +210,7 @@ export default class FeedBackScreen extends React.Component {
                   }}
                 >
 
-                  <TextInputInput
+                  <TextInput
                     style={{
                       fontSize: 18,
                       height: 70,

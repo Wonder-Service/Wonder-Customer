@@ -28,14 +28,12 @@ export default class MapPickerScreen extends React.Component {
           picklongitude: e.nativeEvent.coordinate.longitude,
         },
       });
-      await AsyncStorage.setItem('picklatitude', e.nativeEvent.coordinate.latitude + '')
+      await AsyncStorage.setItem('pickLatitude', e.nativeEvent.coordinate.latitude + '')
       await AsyncStorage.setItem('pickLongitude', e.nativeEvent.coordinate.longitude + '' )
-
-      // console.log (this.state.pickCoords);
     };
   };
   handlePickerCoodrs = () => {
-    NavigationService.navigate ('RequestDetailScreen', this.state.pickCoords);
+    NavigationService.navigate ('RequestDetailScreen', {pickCoords: this.state.pickCoords});
   };
 
   render () {
@@ -74,9 +72,7 @@ export default class MapPickerScreen extends React.Component {
               await fetch (url, {
                 method: 'GET',
               }).then (res => res.json() ).then(data => {
-                  console.log(data.results[0].geometry.location)
                   this.setState({pickCoords:{picklatitude: data.results[0].geometry.location.lat, picklongitude: data.results[0].geometry.location.lng}})
-                  console.log(this.state.pickCoords)
               });
             }}
           />

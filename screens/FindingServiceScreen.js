@@ -11,24 +11,21 @@ import { TouchableOpacity, FlatList } from "react-native-gesture-handler";
 import NavigationService from "../service/navigation";
 import { Notifications } from "expo";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { POST, GET, POSTLOGIN, POST_NOTIFICATION, PUT } from "../api/caller";
+import { GET, PUT } from "../api/caller";
 import {
   USER_ENDPOINT,
-  NOTIFICATION_TYPE_ACCEPT,
   NOTIFICATION_TYPE_REQEST,
   NOTIFICATION_TYPE_COMPELETE,
   ACCEPT_ORDER_ENDPOINT,
 } from "../api/endpoint";
-import HomeScreenV2 from "./HomeScreenV2";
 import FindingComponent from "../components/FindingComponent";
-import AcceptWokerPopup from "../components/AcceptWorkerPopup";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
 
 export default class FindingServiceScreen extends React.Component {
   state = {
-    isnoti: true,
+    isNoti: false,
     worker: {
       name: "",
       skills: [],
@@ -40,6 +37,22 @@ export default class FindingServiceScreen extends React.Component {
     workerUsername: null,
     diagnoseMess: "Need to change battery ",
     isDecline: false,
+  };
+
+  handleAccept = async () => {
+    let orderNewId = await AsyncStorage.getItem("orderId");
+    await PUT(
+      ACCEPT_ORDER_ENDPOINT + "/" + orderNewId,
+      {},
+      {},
+      {
+        workerId: this.state.worker.id,
+      }
+    ).then((res) => {
+      if (res.status === 200) {
+        NavigationService.navigate("MapDirection");
+      }
+    });
   };
 
   handleNotification = async (noti) => {
@@ -55,7 +68,6 @@ export default class FindingServiceScreen extends React.Component {
         });
         await GET(USER_ENDPOINT + "/" + noti.data.workerId, {}, {}).then(
           (res) => {
-
             WORKER = res;
             this.setState({
               worker: {
@@ -74,67 +86,163 @@ export default class FindingServiceScreen extends React.Component {
             );
           }
         );
-        await this.setState({isnoti: false})
+        await this.setState({ isNoti: true });
         // this.setState({isDecline: false})
-        await console.log(this.state.isnoti)
+        await console.log(this.state.isNoti);
         break;
       }
-      case NOTIFICATION_TYPE_COMPELETE:{
+      case NOTIFICATION_TYPE_COMPELETE: {
         NavigationService.navigate("FeedBackScreen");
         break;
       }
       default: {
-        console.log(noti)
+        console.log(noti);
       }
     }
   };
   async componentDidMount() {
     this._notificationSubscription = Notifications.addListener((noti) => {
-      console.log("this is notification handler")
       this.handleNotification(noti);
     });
   }
 
+  handleDecline = () => {
+    this.setState({
+      isNoti: false,
+    })
+  }
+
   render() {
-    const {
-      isnoti,
-      worker,
-      priceSerivce,
-      diagnoseMess,
-      isDecline,
-    } = this.state;
-    const renderBody = this.renderBody;
+    const { isNoti, worker } = this.state;
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.headerTextView}>
-          <Text style={styles.headerText}>
-            {isnoti
-              ? "System is finding worker for you"
-              : "Found a worker for you"}
-          </Text>
+    if (isNoti) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.headerTextView}>
+            <Text style={styles.headerText}>Found a worker for you</Text>
+          </View>
+          <View style={{ marginTop: 70 }}>
+            <View style={styles.foundContainer}>
+              <View
+                style={{
+                  width: 130,
+                  height: 130,
+                  borderRadius: 65,
+                  marginTop: -65,
+                  backgroundColor: "#F56258",
+                  overflow: "hidden",
+                  borderWidth: 4,
+                  borderColor: "white",
+                }}
+              >
+                <Image
+                  style={{ width: 122, height: 122, marginTop: 15 }}
+                  source={{
+                    uri: "https://www.pngrepo.com/png/17468/170/avatar.png",
+                  }}
+                />
+              </View>
+              <Text>Found A Worker</Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  emphasis="bold"
+                  style={{
+                    fontSize: 25,
+                    justifyContent: "center",
+                  }}
+                >
+                  {worker.name}{" "}
+                </Text>
+                <Icon
+                  name="shield-check"
+                  style={{ fontSize: 25, color: "#3ddc84" }}
+                />
+              </View>
+              <FlatList
+                data={worker.skills}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <Text>{item.name}</Text>}
+              />
+              <View style={{ flexDirection: "row" }}>
+                <Icon name="star" style={styles.starIcon} />
+                <Icon name="star" style={styles.starIcon} />
+                <Icon name="star" style={styles.starIcon} />
+                <Icon name="star" style={styles.starIcon} />
+                <Icon name="star-half" style={styles.starIcon} />
+              </View>
+              <Text style={{ fontSize: 16 }}>
+                {worker.phoneNumber}
+              </Text>
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingBottom: 20,
+                }}
+              >
+                <TouchableOpacity onPress={() => {this.handleAccept()}}>
+                  <View
+                    style={{
+                      marginTop: 25,
+                      marginRight: 15,
+                      width: (width * 3) / 10,
+                      color: "white",
+                      backgroundColor: "green",
+                      borderRadius: 20,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        paddingVertical: 10,
+                        paddingHorizontal: 20,
+                        color: "white",
+                      }}
+                    >
+                      Accept
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => {this.handleDecline()}}>
+                  <View
+                    style={{
+                      marginTop: 25,
+                      width: (width * 3) / 10,
+                      color: "white",
+                      backgroundColor: "red",
+                      borderRadius: 20,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        paddingVertical: 10,
+                        paddingHorizontal: 20,
+                        color: "white",
+                      }}
+                    >
+                      Decline
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </View>
-
-        {isnoti  ? (
+      );
+    } else {
+      return (
+        <View style={styles.container}>
           <FindingComponent />
-        ) : (
-          <AcceptWokerPopup
-            workerData={worker}
-            handleDecline={(check) => {
-              // this.setState({ isnoti: check });
-              console.log(check)
-            }}
-          />
-        )}
-
-        {/* {
-          isDecline && <FindingComponent/>
-        }
-         {isDecline && <AcceptWokerPopup workerData={this.state.worker}
-         handleDecline={(check) => {this.setState({isDecline:check})}}/>} */}
-      </View>
-    );
-    console.log(this.state.notification);
+        </View>
+      );
+    }
   }
 }
 

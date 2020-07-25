@@ -6,19 +6,11 @@ import {
   Dimensions,
   Image,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import NavigationService from "../service/navigation";
-import { Notifications } from "expo";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { POST, GET, POSTLOGIN, POST_NOTIFICATION, PUT } from "../api/caller";
-import {
-  USER_ENDPOINT,
-  NOTIFICATION_TYPE_ACCEPT,
-  NOTIFICATION_TYPE_REQEST,
-  NOTIFICATION_TYPE_COMPELETE,
-  ACCEPT_ORDER_ENDPOINT,
-} from "../api/endpoint";
+import { PUT } from "../api/caller";
+import { ACCEPT_ORDER_ENDPOINT } from "../api/endpoint";
 
 const height = Dimensions.get("screen").height;
 const width = Dimensions.get("screen").width;
@@ -26,7 +18,6 @@ const width = Dimensions.get("screen").width;
 const FindingComponent = () => {
   const handleCancel = async () => {
     let orderNewId = await AsyncStorage.getItem("orderId");
-    console.log(orderNewId);
     await PUT(
       ACCEPT_ORDER_ENDPOINT,
       {},
@@ -38,12 +29,14 @@ const FindingComponent = () => {
     ).then((res) => {
       NavigationService.navigate("HomeScreenV2");
     });
-
   };
   return (
     <View style={styles.container}>
+      <View style={styles.headerTextView}>
+        <Text style={styles.headerText}>System is finding worker for you</Text>
+      </View>
       <Image
-        style={{ marginVertical: 80 }}
+        // style={{ marginVertical: 80 }}
         source={require("../assets/images/searching.gif")}
       />
       <View style={styles.buttonContainer}>
