@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Input, Block, theme, Button } from 'galio-framework';
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { TextInput } from 'react-native-gesture-handler'; 
+import { TextInput } from 'react-native-gesture-handler';
 import { GET,PUT } from "../api/caller";
 import { USER_ENDPOINT, USER_GET_PROFILE_ENDPOINT  } from "../api/endpoint";
 import NavigationService from '../service/navigation';
@@ -21,7 +21,7 @@ const height = Dimensions.get('screen').height;
 const width = Dimensions.get('screen').width;
 
 export default class ProfileScreen extends Component{
-    state = { 
+    state = {
         fullName: '',
         editableProfile:false,
         displayBtnSave: 0,
@@ -33,7 +33,7 @@ export default class ProfileScreen extends Component{
         };
 
   handleBackHomeButton = () => {
-    NavigationService.navigate("HomeScreen")
+    NavigationService.navigate("HomeScreenV2")
   }
 
   handleLogoutButton = () => {
@@ -42,15 +42,11 @@ export default class ProfileScreen extends Component{
 
     // not have history order Screen yet
   handleHistoryOrderButton = () => {
-    NavigationService.navigate("HistoryOrderScreen")
+    NavigationService.navigate("HistoryScreen")
   }
 
 
   handleUpdate = async () =>{
-    console.log()
-    console.log(this.state.id)
-    console.log(this.state.phone)
-    console.log(this.state.email)
     let id = this.state.id
     await PUT(USER_ENDPOINT + "/"+ id,{},{},{
       address: this.state.address,
@@ -66,7 +62,7 @@ export default class ProfileScreen extends Component{
 
         async componentDidMount () {
             //get jwt
-            //load profile data 
+            //load profile data
           await GET(USER_GET_PROFILE_ENDPOINT,{}, {})
 
             .then(res => {
@@ -76,20 +72,13 @@ export default class ProfileScreen extends Component{
                     phone: res[0].phone,
                     fullName: res[0].fullname,
                     address: res[0].address,
-                  
+
                 })
-                console.log(this.state.fullName)
-              console.log(this.state.email)
-              console.log(this.state.id)
-              console.log(this.state.phone)
-              
-                
-        
             })
         }
 
-        
-        
+
+
     render(){
       const { editableProfile, displayBtnSave, email, address, fullName, phone, borderBottomColorProfile} = this.state
         return (
@@ -135,7 +124,7 @@ export default class ProfileScreen extends Component{
                     height: 50,
                     marginTop: -10,
                     marginLeft:15,
-                    
+
                   }}
                 >
                   {/* Full name */}
@@ -195,7 +184,7 @@ export default class ProfileScreen extends Component{
                   {/* load phone number  */}
                   <TextInput
                     editable={editableProfile}
-                    style={{ 
+                    style={{
                       opacity: 0.6,
                       borderBottomWidth: 1.5,
                       width: "75%",
@@ -203,7 +192,7 @@ export default class ProfileScreen extends Component{
                       marginLeft: 15,
                       fontSize: 16,
                       fontFamily: "Roboto",
-                      borderBottomColor: borderBottomColorProfile, 
+                      borderBottomColor: borderBottomColorProfile,
                       }}
                     onChangeText={text => {
                       this.setState({ phone: text });
@@ -238,7 +227,7 @@ export default class ProfileScreen extends Component{
                       marginLeft: 15,
                       fontSize: 16,
                       fontFamily: "Roboto",
-                      borderBottomColor: borderBottomColorProfile, 
+                      borderBottomColor: borderBottomColorProfile,
                       }}
                     onChangeText={text => {
                       this.setState({ address: text });
@@ -271,7 +260,7 @@ export default class ProfileScreen extends Component{
                       marginLeft: 15,
                       fontSize: 16,
                       fontFamily: "Roboto",
-                      borderBottomColor: borderBottomColorProfile, 
+                      borderBottomColor: borderBottomColorProfile,
                       }}
                     onChangeText={text => {
                       this.setState({ email: text });
@@ -329,7 +318,7 @@ export default class ProfileScreen extends Component{
 
               {/* Save and back to home  */}
               <View style={{flexDirection:"row",width:'100%',height:200}}>
-                
+
                 {/* Back home button */}
                 <TouchableOpacity
                   style={{
@@ -356,19 +345,19 @@ export default class ProfileScreen extends Component{
                   onPress={this.handleBackHomeButton}
                 >
                   <Image
-                    
+
                     source={require("../assets/images/backButtonProfile.png")}
                   />
                 </TouchableOpacity>
 
                 {/* Button Save */}
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={{
                     marginTop:50,
                     marginLeft: 20,
                   }}
                   onPress={() => {
-                    
+
                     //disappear save button
                     this.setState({ displayBtnSave: 0 });
                     // disable all profile
@@ -379,7 +368,7 @@ export default class ProfileScreen extends Component{
 
                     // handle update
                     this.handleUpdate();
-                    
+
                   }}
                 >
                   <Image
@@ -387,7 +376,7 @@ export default class ProfileScreen extends Component{
                     source={require("../assets/images/btnSaveProfile.png")}
                   />
                 </TouchableOpacity>
-            
+
               </View>
 
             </ScrollView>
@@ -401,7 +390,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
     },
-    
+
     userHeader: {
         fontSize: 24,
         fontFamily: "Roboto",
@@ -449,7 +438,7 @@ const styles = StyleSheet.create({
         marginLeft: 34,
         marginTop: -30,
     },
-    
+
     logoutButton: {
         width: 100,
     },

@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Login from "./screens/LoginScreen";
 import HomeRequestService from "./screens/HomeRequestService";
 import HomeScreen from "./screens/HomeScreen";
+import HomeScreenV2 from "./screens/HomeScreenV2";
 import FindingServiceScreen from './screens/FindingServiceScreen'
 import { createAppContainer } from 'react-navigation';
 import NavigationService from "./service/navigation";
@@ -14,6 +15,12 @@ import FeedBackScreen from "./screens/FeedBackScreen"
 import { AppLoading } from 'expo';
 import MapDirection from "./screens/MapDirection";
 import ProfileScreen from "./screens/ProfileScreen";
+import HistoryScreen from "./screens/HistoryScreen";
+import HistoryDetail from "./screens/HistoryDetail";
+import SplashScreen from "./screens/SplashScreen";
+import SigninScreen from "./screens/SigninScreen";
+import SignupScreen from  "./screens/SignupScreen";
+
 import * as Font from 'expo-font';
 
 
@@ -21,7 +28,21 @@ import * as Font from 'expo-font';
 const Container = createStackNavigator(
   {
     Login: {
-      screen: Login,
+      screen: SigninScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+    SignUp: {
+      screen: SignupScreen,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+    Splash: {
+      screen: SplashScreen,
       navigationOptions: {
         header: null,
         gesturesEnabled: false,
@@ -41,7 +62,27 @@ const Container = createStackNavigator(
         gesturesEnabled: false,
       },
     },
-
+    HomeScreenV2: {
+      screen: HomeScreenV2,
+      navigationOptions: {
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+    HistoryScreen:{
+      screen:HistoryScreen,
+      navigationOptions:{
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
+    HistoryDetail:{
+      screen:HistoryDetail,
+      navigationOptions:{
+        header: null,
+        gesturesEnabled: false,
+      },
+    },
     RequestDetailScreen: {
       screen: RequestDetailScreen,
       navigationOptions: {
@@ -95,7 +136,7 @@ const Container = createStackNavigator(
 
   },
   {
-    initialRouteName: "Login"
+    initialRouteName: "Splash"
   }
 );
 
@@ -135,7 +176,7 @@ export default class App extends React.Component {
         />
       );
     }
-    
+
   }
 
 }

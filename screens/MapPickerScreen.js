@@ -1,7 +1,7 @@
 import React from 'react';
 import MapView, {Marker} from 'react-native-maps';
 
-import {StyleSheet, View, Dimensions, Text, Button} from 'react-native';
+import {StyleSheet, View, Dimensions, Text, Button, AsyncStorage} from 'react-native';
 import {TouchableOpacity, TextInput} from 'react-native-gesture-handler';
 import NavigationService from './../service/navigation';
 import {GET} from '../api/caller';
@@ -28,11 +28,12 @@ export default class MapPickerScreen extends React.Component {
           picklongitude: e.nativeEvent.coordinate.longitude,
         },
       });
-      console.log (this.state.pickCoords);
+      await AsyncStorage.setItem('pickLatitude', e.nativeEvent.coordinate.latitude + '')
+      await AsyncStorage.setItem('pickLongitude', e.nativeEvent.coordinate.longitude + '' )
     };
   };
   handlePickerCoodrs = () => {
-    NavigationService.navigate ('RequestDetailScreen', this.state.pickCoords);
+    NavigationService.navigate ('RequestDetailScreen', {pickCoords: this.state.pickCoords});
   };
 
   render () {
@@ -71,9 +72,7 @@ export default class MapPickerScreen extends React.Component {
               await fetch (url, {
                 method: 'GET',
               }).then (res => res.json() ).then(data => {
-                  console.log(data.results[0].geometry.location)
                   this.setState({pickCoords:{picklatitude: data.results[0].geometry.location.lat, picklongitude: data.results[0].geometry.location.lng}})
-                  console.log(this.state.pickCoords)
               });
             }}
           />

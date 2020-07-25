@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import Button from '../components/Button';
-import {LOGIN_ENDPOINT, DEVICEID_ENDPOINT} from '../api/endpoint';
+import DropdownAlert from 'react-native-dropdownalert';
 import NavigationService from '../service/navigation';
 import {POSTLOGIN, PUT, POST, POST_NOBODY} from '../api/caller';
 import registerForPushNotificationsAsync from '../service/notification';
@@ -55,9 +55,9 @@ export default class LoginScreen extends Component {
               {
                 deviceId: deviceId,
               }
-            ).then(res => 
+            ).then(res =>
                 {
-                  NavigationService.navigate('HomeScreen')
+                  NavigationService.navigate("HomeScreenV2")
                 }
               )
               .catch (error => {
