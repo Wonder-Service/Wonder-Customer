@@ -24,10 +24,9 @@ export default class Req extends Component {
   }
 
   state = {
-    pickCoords: { latitude: null, longitude: null },
+    pickCoords: { latitude: "0", longitude: "0" },
     Coords: { latitude: null, longitude: null },
     editable: false,
-    btnEditText: "Edit",
     skillId: 1,
     nameDevice: null,
     description: null,
@@ -38,13 +37,14 @@ export default class Req extends Component {
     isPikerMap: false,
   };
 
-  componentWillMount(){
-    this.setState({
-      isPikerMap: false
-    })
-  }
+  // componentWillMount(){
+  //   this.setState({
+  //     isPikerMap: false
+  //   })
+  // }
 
   async componentDidMount() {
+    console.log("isPick", this.state.isPikerMap);
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status != "granted") {
       const response = await Permissions.askAsync(Permissions.LOCATION);
@@ -88,20 +88,39 @@ export default class Req extends Component {
     // }
   }
 
-  async handlePickerMap() {
-    await this.setState({
-      isPikerMap: true,
-      pickCoords: {
-        latitude: await AsyncStorage.getItem("pickLatitude"),
-        longitude: await AsyncStorage.getItem("pickLongitude"),
-      },
-    });
-    console.log("coordsPick", this.state.pickCoords);
-    // await AsyncStorage.setItem('isPickerMap', this.state.isPikerMap + '')
+  async componentDidUpdate(prevProps) {
+    var lat = await AsyncStorage.getItem("pickLatitude");
+    var lng = await AsyncStorage.getItem("pickLongitude");
+    if (prevProps.isPikerMap !== this.state.isPikerMap) {
+      if (
+        this.state.pickCoords.latitude !== lat ||
+        this.state.pickCoords.longitude !== lng
+      ) {
+        await this.setState({
+          pickCoords: {
+            latitude: lat,
+            longitude: lng,
+          },
+        });
+      }
+    }
+    console.log("Picked", this.state.pickCoords);
   }
 
+  // async handlePickerMap() {
+  //   await this.setState({
+  //     isPikerMap: true,
+  //     pickCoords: {
+  //       latitude: await AsyncStorage.getItem("pickLatitude"),
+  //       longitude: await AsyncStorage.getItem("pickLongitude"),
+  //     },
+  //   });
+  //   console.log("coordsPick", this.state.pickCoords);
+  //   // await AsyncStorage.setItem('isPickerMap', this.state.isPikerMap + '')
+  // }
+
   async getCurrentCoordinate() {
-    console.log("location", this.state.pickCoords);
+    await console.log("location", this.state.Coords);
     await AsyncStorage.setItem("pickLatitude", this.state.Coords.latitude + "");
     await AsyncStorage.setItem(
       "pickLongitude",
@@ -112,7 +131,6 @@ export default class Req extends Component {
   render() {
     const {
       editable,
-      btnEditText,
       skillId,
       nameDevice,
       description,
@@ -143,8 +161,7 @@ export default class Req extends Component {
               <View style={{ alignItems: "center" }}>
                 <Text
                   emphasis="medium"
-                  style={{ fontSize: 25, paddingLeft: 20,
-                      fontWeight: "800" }}
+                  style={{ fontSize: 25, paddingLeft: 20, fontWeight: "800" }}
                 >
                   Fixxy Service Detail
                 </Text>
@@ -231,9 +248,11 @@ export default class Req extends Component {
                     />
 
                     <TouchableOpacity
-                      onPress={async () => {
-                        await NavigationService.navigate("MapPickerScreen");
-                        await this.handlePickerMap();
+                      onPress={() => {
+                        NavigationService.navigate("MapPickerScreen");
+                        this.setState({
+                          isPikerMap: true,
+                        });
                       }}
                     >
                       <MaterialCommunityIcons
@@ -405,9 +424,11 @@ export default class Req extends Component {
                     />
 
                     <TouchableOpacity
-                      onPress={async () => {
-                        await NavigationService.navigate("MapPickerScreen");
-                        await this.handlePickerMap();
+                      onPress={() => {
+                        NavigationService.navigate("MapPickerScreen");
+                        this.setState({
+                          isPikerMap: true,
+                        });
                       }}
                     >
                       <MaterialCommunityIcons

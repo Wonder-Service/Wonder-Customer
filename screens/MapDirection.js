@@ -17,8 +17,8 @@ import * as firebase from "firebase";
 
 import { POST, POSTLOGIN, GET } from "../api/caller";
 import {
-  CANCEL_ORDER_ENDPOINT,
-  POST_NOTIFICATION_ENDPOINT,
+  NOTIFICATION_TYPE_COMPELETE,
+  NOTIFICATION_TYPE_REQEST,
   NOTIFICATION_TYPE_CANCEL,
   ACCEPT_ORDER_ENDPOINT,
 } from "../api/endpoint";
@@ -63,13 +63,21 @@ export default class MapDirection extends Component {
 
   handleNotification = async (noti) => {
     this.setState({ notification: noti });
-    switch (notification.data.notificationType === NOTIFICATION_TYPE_REQEST) {
-      case NOTIFICATION_TYPE_CANCEL:
+    // console.log("noti", this.state.notification)
+    switch (noti.data.notificationType) {
+      case NOTIFICATION_TYPE_CANCEL:{
+        console.log("noti_cancel", noti)
         NavigationService.navigate("HomeScreenV2");
         break;
-      case NOTIFICATION_TYPE_COMPELETE:
+      }
+      case NOTIFICATION_TYPE_COMPELETE:{
+        console.log("noti_complete", noti)
         NavigationService.navigate("FeedBackScreen");
         break;
+      }
+      default:{
+        console.log("noti", noti)
+      }
     }
   };
 
