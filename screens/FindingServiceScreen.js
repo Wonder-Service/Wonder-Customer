@@ -92,6 +92,7 @@ export default class FindingServiceScreen extends React.Component {
         break;
       }
       case NOTIFICATION_TYPE_COMPELETE: {
+        console.log("noti_complete_finding", noti)
         NavigationService.navigate("FeedBackScreen");
         break;
       }
